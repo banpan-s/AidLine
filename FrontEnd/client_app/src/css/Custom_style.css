@@ -1,0 +1,43 @@
+html, body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.main {
+    display: flex;
+    flex-direction: column;
+    flex: 1; /* Allow main content to grow */
+}
+
+.box {
+    margin-top: auto;
+    background-color: red;
+}
+
+
+/* New styles for the header */
+.navbar {
+    background-color: #c23939; /* Light background for the navbar */
+    padding: 1rem; /* Padding for the navbar */
+}
+
+.nav-link {
+    color: #007bff; /* Link color */
+    margin-right: 1rem; /* Space between links */
+}
+
+.logo img {
+    width: 150px;
+    
+}
+
+/* New styles for the footer */
+footer {
+    background-color: #343a40; /* Dark background for the footer */
+    color: white; /* White text color */
+    text-align: center; /* Centered text */
+    padding: 1rem; /* Padding for the footer */
+    margin-top: auto; /* Push footer to the bottom */
+    
+}
