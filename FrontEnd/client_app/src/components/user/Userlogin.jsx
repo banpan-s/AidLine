@@ -2,7 +2,7 @@ import { useState } from "react";
 import "../../css/Custom_style.css"; // Corrected path for the CSS file
 import Header from "../common/Header";
 
-function userlogin() {
+function Userlogin() {
   const [contactData, setContactData] = useState({
     userID: "",
     userPassword: "",
@@ -41,7 +41,7 @@ function userlogin() {
               onChange={fetchData}
             />
             <input
-              type="text"
+              type="password"
               placeholder="Password"
               name="userPassword"
               value={contactData.userPassword}
@@ -80,4 +80,4 @@ function userlogin() {
   );
 }
 
-export default userlogin;
+export default Userlogin;

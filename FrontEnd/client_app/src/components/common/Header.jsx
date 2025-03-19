@@ -27,20 +27,33 @@ const Header = () => {
                             <li className="nav-item">
                                 <Link className="nav-link" to="/Contact">Contact</Link>
                             </li>
+                             
+
+
                             <li className="nav-item dropdown">
                                 <Link className="nav-link dropdown-toggle" to="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    Sign in
+                                    Register
                                 </Link>
                                 <ul className="dropdown-menu">
-                                    <li><Link className="dropdown-item" to="../adminlogin">Admin</Link></li>
-                                    <li><Link className="dropdown-item" to="../userlogin">Users</Link></li>
+                                    <li><Link className="dropdown-item" to="/adminRegister">Admin</Link></li>
+                                    <li><Link className="dropdown-item" to="/ownerRegister">Owner</Link></li>
                                 </ul>
                             </li>
+                            <li className="nav-item dropdown">
+                                <Link className="nav-link dropdown-toggle" to="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Login   
+                                </Link>
+                                <ul className="dropdown-menu">
+                                    <li><Link className="dropdown-item" to="/adminlogin">Admin</Link></li>
+                                    <li><Link className="dropdown-item" to="/userlogin">Owner</Link></li>
+                                </ul>
+                            </li>
+
+
                         </ul>
-                        <form className="d-flex" role="search">
+                        {/* <form className="d-flex" role="search">
                             <input className="form-control me-2" type="search" placeholder="Search" aria-label="Search"/>
-                            <button className="btn btn-outline-success" type="submit">Search</button>
-                        </form>
+                        </form> */}
                     </div>
                 </div>
             </nav>
