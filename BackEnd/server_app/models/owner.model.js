@@ -3,6 +3,12 @@ const ownerSchema=new mongoose.Schema({
 email:{type:String,required:true},            //  update 234567
 password:({type:String,required:true}),
 orgname:({type:String,required:true}),
+ownername:({type:String,required:true}),
+phone:({type:String,required:true}),
+address:({type:String,required:true}),
+orgtype:({type:String,required:true}),
+description:({type:String,required:true}),
+file:({type:String,required:true}),
 date:{type:String,default:()=>new Date().toISOString().split('T')[0]}
 
 })

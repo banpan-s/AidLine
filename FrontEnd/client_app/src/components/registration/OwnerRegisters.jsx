@@ -9,8 +9,16 @@ function OwnerRegister() {
     email:"",
     password:"",
     orgname:"",
+    ownername:"",
+    address:"",
+    phone:"",
+    address:"",
+    orgtype:"",
+    description:"",
+    file:"",
 
-  })
+
+  });
   const fetchData = (event) => {
    const {name,value,type,files}=event.target
    setRegistrationData({...registrationData,[name]:value})          // updating value
@@ -68,7 +76,7 @@ function OwnerRegister() {
                           <i className="fas fa-user fa-lg me-3 fa-fw"></i>
                           <div data-mdb-input-init className="form-outline flex-fill mb-0">
                             <label className="form-label" htmlFor="form3Example4d">OwnerName</label>
-                            <input type="text" id="form3Example4d" className="form-control" />
+                            <input type="text" name="ownername" onChange={fetchData} value={registrationData.ownername} id="form3Example4d" className="form-control" />
                           </div>
                         </div>
 
@@ -76,19 +84,19 @@ function OwnerRegister() {
                           <i className='fas fa-phone-volume fa-lg me-3 fa-fw'></i>
                           <div data-mdb-input-init className="form-outline flex-fill mb-0">
                             <label className="form-label" htmlFor="form3Example4e">Phone</label>
-                            <input type="tel" id="form3Example4e" className="form-control" />
+                            <input type="tel" name="phone" onChange={fetchData} value={registrationData.phone} id="form3Example4e" className="form-control" />
                           </div>
                         </div>
 
                         <div className="d-flex flex-row align-items-center mb-4">
                           <div data-mdb-input-init className="form-outline flex-fill mb-0">
                             <label className="form-label" htmlFor="form3Example4cd">Address</label>
-                            <input type="text" id="form3Example4cd" className="form-control" />
+                            <input type="text" name="address" onChange={fetchData} value={registrationData.address} id="form3Example4cd" className="form-control" />
                           </div>
                         </div>
 
                         <div className="d-flex flex-row align-items-center mb-4">
-                          <select data-mdb-select-init>
+                          <select data-mdb-select-init name="orgtype" onChange={fetchData} value={registrationData.orgtype}>
                             <option value="1">Organization Type</option>
                             <option value="2">Salon</option>
                             <option value="3">Clinic</option>
@@ -98,7 +106,7 @@ function OwnerRegister() {
                         </div>
 
                         <div>
-                          <textarea placeholder="Description"> Description </textarea>
+                          <textarea placeholder="Description" name="description" onChange={fetchData} value={registrationData.description}> Description </textarea>
                         </div>
 
                         {/* File Input */}
@@ -110,8 +118,9 @@ function OwnerRegister() {
                             <input
                               onChange={fetchData}
                               type="file"
-                              name="pic"
-                              className="form-control"
+                              name="file"
+                              value={registrationData.file}
+                              className="form-control"   
                             />
                           </div>
                         </div>
