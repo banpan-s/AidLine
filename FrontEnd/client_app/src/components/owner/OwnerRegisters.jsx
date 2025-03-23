@@ -1,9 +1,13 @@
 import React, { useState } from "react";
 import Header from "../common/Header";
 import Footer from "../common/Footer";
+import { useNavigate } from "react-router-dom";
+// import Adminlogin from "./OwnerLogin";
 import axios from "axios"
 
 function OwnerRegister() {
+
+  const navigate = useNavigate()
 
   const [registrationData, setRegistrationData]=useState({
     email:"",
@@ -12,7 +16,6 @@ function OwnerRegister() {
     ownername:"",
     address:"",
     phone:"",
-    address:"",
     orgtype:"",
     description:"",
     file:"",
@@ -20,25 +23,31 @@ function OwnerRegister() {
 
   });
   const fetchData = (event) => {
-   const {name,value,type,files}=event.target
-   setRegistrationData({...registrationData,[name]:value})          // updating value
+  //  const {name,value,type,files}=event.target;
+  //  console.log(value)
+   setRegistrationData({...registrationData,[event.target.name]:event.target.value})          // updating value
   };
 
   const handleSubmit = async(event) => {
     event.preventDefault();
     console.log(registrationData);
     
-    await axios.post("http://localhost:3000/owner/addowner",registrationData)       //(is par bhejte hai ,  ye bhejte hai)
+    const serverResponse = await axios.post("http://localhost:3000/owner/addowner",registrationData)       //(is par bhejte hai ,  ye bhejte hai)
+    alert(serverResponse.data.message);
+    navigate("/ownerlogin")
+ 
   };
 
   return (
     <>
       <Header />
-      <section className="vh-100" style={{ backgroundColor: '', marginTop: "2%" }}>
+      <div className="main" style={{height:"160vh"}}>
+        
+      <section className="vh-100 " style={{ backgroundColor: '', marginTop: "2%" }}>
         <div className="container h-100">
           <div className="row d-flex justify-content-center align-items-center h-100">
             <div className="col-lg-12 col-xl-11">
-              <div className="card text-black" style={{ borderRadius: '25px' }}>
+              <div className="text-black" style={{ borderRadius: '25px' }}>
                 <div className="card-body p-md-5">
                   <div className="row justify-content-center">
                     <div className="col-md-10 col-lg-6 col-xl-5 order-2 order-lg-1">
@@ -133,7 +142,7 @@ function OwnerRegister() {
 
                       </form>
                     </div>
-                    <div className="col-md-10 col-lg-6 col-xl-7 d-flex align-items-center order-1 order-lg-2">
+                    <div className="col-md-10 col-lg-6 col-xl-7 d-flex align-items-center order-6 order-lg-2">
                       <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-registration/draw1.webp" className="img-fluid" alt="Sample image" />
                     </div>
                   </div>
@@ -143,9 +152,103 @@ function OwnerRegister() {
           </div>
         </div>
       </section>
+      </div>
       <Footer />
     </>
   );
 }
 
 export default OwnerRegister;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// import React, { useState } from "react";
+// import Header from "../common/Header";
+// import Footer from "../common/Footer";
+// import { useNavigate } from "react-router-dom";
+// // import Adminlogin from "./OwnerLogin";
+// import axios from "axios"
+
+// function OwnerRegister() {
+
+//   const navigate = useNavigate()
+
+//   const [registrationData, setRegistrationData]=useState({
+//     email:"",
+//     password:"",
+//     orgname:"",
+//     ownername:"",
+//     address:"",
+//     phone:"",
+//     orgtype:"",
+//     description:"",
+//     file:"",
+
+
+//   });
+//   const fetchData = (event) => {
+//   //  const {name,value,type,files}=event.target;
+//   //  console.log(value)
+//    setRegistrationData({...registrationData,[event.target.name]:event.target.value})          // updating value
+//   };
+
+//   const handleSubmit = async(event) => {
+//     event.preventDefault();
+//     console.log(registrationData);
+    
+//     const serverResponse = await axios.post("http://localhost:3000/owner/addowner",registrationData)       //(is par bhejte hai ,  ye bhejte hai)
+//     alert(serverResponse.data.message);
+//     navigate("/ownerlogin")
+ 
+//   };
+
+//   return (
+//     <>
+//       <Header />
+//       <div style={{ maxWidth: "600px", margin: "0 auto", padding: "20px", backgroundColor: "#f9f9f9", borderRadius: "8px", boxShadow: "0 0 10px rgba(0,0,0,0.1)" }}>
+//         <h2 style={{ textAlign: "center", marginBottom: "20px" }}>Organization Registration</h2>
+//         <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+//           <input type="email" name="email" placeholder="Your Email" value={registrationData.email} onChange={fetchData} style={{ padding: "10px", border: "1px solid #ccc", borderRadius: "4px" }} required />
+//           <input type="password" name="password" placeholder="Password" value={registrationData.password} onChange={fetchData} style={{ padding: "10px", border: "1px solid #ccc", borderRadius: "4px" }} required />
+//           <input type="text" name="orgname" placeholder="Organization Name" value={registrationData.orgname} onChange={fetchData} style={{ padding: "10px", border: "1px solid #ccc", borderRadius: "4px" }} required />
+//           <input type="text" name="ownername" placeholder="Owner Name" value={registrationData.ownername} onChange={fetchData} style={{ padding: "10px", border: "1px solid #ccc", borderRadius: "4px" }} required />
+//           <input type="tel" name="phone" placeholder="Phone" value={registrationData.phone} onChange={fetchData} style={{ padding: "10px", border: "1px solid #ccc", borderRadius: "4px" }} required />
+//           <input type="text" name="address" placeholder="Address" value={registrationData.address} onChange={fetchData} style={{ padding: "10px", border: "1px solid #ccc", borderRadius: "4px" }} required />
+//           <select name="orgtype" value={registrationData.orgtype} onChange={fetchData} style={{ padding: "10px", border: "1px solid #ccc", borderRadius: "4px" }} required>
+//             <option value="">Select Organization Type</option>
+//             <option value="Salon">Salon</option>
+//             <option value="Clinic">Clinic</option>
+//             <option value="Hospital">Hospital</option>
+//             <option value="Shop">Shop</option>
+//           </select>
+//           <textarea name="description" placeholder="Description" value={registrationData.description} onChange={fetchData} style={{ padding: "10px", border: "1px solid #ccc", borderRadius: "4px" }} required></textarea>
+//           <input type="file" name="file" onChange={fetchData} style={{ padding: "10px", border: "1px solid #ccc", borderRadius: "4px" }} required />
+//           <button type="submit" style={{ padding: "10px", backgroundColor: "#007BFF", color: "white", border: "none", borderRadius: "4px", cursor: "pointer" }}>Register</button>
+//         </form>
+//       </div>
+//       <Footer />
+//     </>
+//   );
+// }
+
+// export default OwnerRegister;
+
+

@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import axios from "axios";
 import "../../css/Custom_style.css"; // Custom styles if needed
@@ -7,7 +6,7 @@ import Header from "../common/Header";
 import { useNavigate } from "react-router-dom";
 
 
-function Userlogin() {
+function Ownerlogin() {
   const navigate = useNavigate();
   const [contactData, setContactData] = useState({
     userID: "",
@@ -19,7 +18,7 @@ function Userlogin() {
     setContactData({ ...contactData, [e.target.name]: e.target.value });
   };
 
-  const URL = "http://localhost:3000/user/userlogin";     //owner/userlogin
+  const URL = "http://localhost:3000/owner/ownerlogin";
 
   // Handle form submission
   const submitData = async (e) => {
@@ -47,7 +46,7 @@ function Userlogin() {
 
       <div className="d-flex justify-content-center align-items-center vh-100 bg-light">
         <div className="card p-4 shadow-lg" style={{ width: "350px" }}>
-          <h3 className="text-center mb-3">User Login</h3>
+          <h3 className="text-center mb-3">Owner Login</h3>
           <form onSubmit={submitData}>
             {/* User ID Field */}
             <div className="mb-3">
@@ -101,4 +100,4 @@ function Userlogin() {
   );
 }
 
-export default Userlogin;
+export default Ownerlogin;

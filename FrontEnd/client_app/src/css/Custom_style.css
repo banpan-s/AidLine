@@ -1,43 +1,88 @@
-html, body {
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
+
+html,body{
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+
 }
 
 .main {
-    display: flex;
-    flex-direction: column;
-    flex: 1; /* Allow main content to grow */
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 }
+
+
+main>footer{
+  margin-top:auto;
+}
+
+/* Don't Touch  */
+/* ------------------------------------------------------------------------------------------------------------- */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 .box {
-    margin-top: auto;
-    background-color: red;
+  margin-top: auto; 
+  background-color: rgb(130, 146, 177);
 }
 
-
-/* New styles for the header */
 .navbar {
-    background-color: #c23939; /* Light background for the navbar */
-    padding: 1rem; /* Padding for the navbar */
+  background-color: #d49797;
+  padding: 1rem;
+  border-radius: 99px;
+  margin: 5px;
+  font-size: large;
+  height: 60px;
 }
 
 .nav-link {
-    color: #007bff; /* Link color */
-    margin-right: 1rem; /* Space between links */
+  color: #000000;
+  margin-right: 1rem;
+}
+
+.nav-item {
+  margin-right: 1rem;
+  font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
 }
 
 .logo img {
-    width: 150px;
-    
+  width: 150px;
+  margin-right: 80px;
 }
 
-/* New styles for the footer */
 footer {
-    background-color: #343a40; /* Dark background for the footer */
-    color: white; /* White text color */
-    text-align: center; /* Centered text */
-    padding: 1rem; /* Padding for the footer */
-    margin-top: auto; /* Push footer to the bottom */
-    
+  background-color: #343a40;
+  color: white;
+  text-align: center;
+  padding: 1rem;
+  margin-top: auto;
+  bottom: 0;
 }
+.bg{
+  background-image: url(../../public/images/bg.png);
+  width: 81rem;
+  height: 20rem;
+  margin: 2%;
+  border-radius: 4%;
+}
+
+
+
+

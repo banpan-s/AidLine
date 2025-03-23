@@ -1,14 +1,12 @@
 import { Link } from 'react-router-dom';
 import '../../css/Custom_style.css';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHome } from '@fortawesome/free-solid-svg-icons';
-const AidlineLogo = '/images/Aidline_logo.png'; // Updated image import
+const AidlineLogo = '/images/l.png'; // Updated image import
 
 
 const Header = () => {
     return (
         <>
-            <nav className="navbar navbar-expand-lg bg-body-tertiary">
+            <nav className="navbar navbar-expand-lg " >
                 <div className="container-fluid">
                     <Link className="logo" to="#"><img src={AidlineLogo} alt="Logo" /></Link>
                     <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -18,7 +16,7 @@ const Header = () => {
                         <ul className="navbar-nav me-auto mb-2 mb-lg-0">
                             <li className="nav-item">
                                 <Link className="nav-link active" aria-current="page" to="/">
-                                    <FontAwesomeIcon icon={faHome} />
+                                   Home
                                 </Link>
                             </li>
                             <li className="nav-item">
@@ -35,7 +33,7 @@ const Header = () => {
                                     Register
                                 </Link>
                                 <ul className="dropdown-menu">
-                                    <li><Link className="dropdown-item" to="/adminRegister">Admin</Link></li>
+                                    <li><Link className="dropdown-item" to="/userRegister">User</Link></li>
                                     <li><Link className="dropdown-item" to="/ownerRegister">Owner</Link></li>
                                 </ul>
                             </li>
@@ -44,8 +42,8 @@ const Header = () => {
                                     Login   
                                 </Link>
                                 <ul className="dropdown-menu">
-                                    <li><Link className="dropdown-item" to="/adminlogin">Admin</Link></li>
-                                    <li><Link className="dropdown-item" to="/userlogin">Owner</Link></li>
+                                    <li><Link className="dropdown-item" to="/userlogin">User</Link></li>
+                                    <li><Link className="dropdown-item" to="/ownerlogin">Owner</Link></li>
                                 </ul>
                             </li>
 

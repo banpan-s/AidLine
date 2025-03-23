@@ -1,11 +1,10 @@
-import {Link} from 'react-router-dom'
 import '../../css/Custom_style.css'
 
 
-const Footer=()=>{
+const Footer = () => {
     return(
         <>
-        <footer>
+        <footer className='box'>
             <h2>Footeer</h2>
             <h3>Created by Bheem</h3>
             <p>Copyright 2022</p>
