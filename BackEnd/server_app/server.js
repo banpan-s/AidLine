@@ -18,6 +18,9 @@ serverApp.use(express.static("public"))  // to tell the serverthat all docs will
 serverApp.use("/",commonRoute)
 serverApp.use("/owner",ownerRouter)
 serverApp.use("/user",userRoute)
+app.use("/uploads", express.static("public/uploads"));
+app.use(express.static("public/uploads"))
+
 
 serverApp.listen(PORT_NUMBER,()=>{
     console.log(`server is listening on http://localhost:${PORT_NUMBER}`)
