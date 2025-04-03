@@ -5,9 +5,8 @@ import "./css/Custom_style.css"; // Corrected path for the CSS file
 function App() {
   return (
     <>
-      <div className="main" style={{ minHeight: "100vh", marginTop:"auto" }}>
-        {" "}
-        {/* Added minHeight */}
+      <div className="main" style={{ minHeight: "100vh", marginTop: "auto" }}>
+        
         <Header />
         <h1 style={{ textAlign: "center" }}>Home page</h1>
         <div className="bg">.</div>

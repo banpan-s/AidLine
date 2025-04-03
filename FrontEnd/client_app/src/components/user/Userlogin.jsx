@@ -32,7 +32,7 @@ function Userlogin() {
       if (serverResponse.data.status === "Success") {
         alert(serverResponse.data.message);
         localStorage.setItem("key", serverResponse.data.token);
-        navigate("/ownerhome");
+        navigate("/userhome");
       } else {
         alert(serverResponse.data.message);
       }

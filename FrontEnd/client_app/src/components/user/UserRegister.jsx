@@ -57,6 +57,7 @@ console.log(userPic);
     try{
       const response=await axios.post(URL,formData)
       console.log(response);
+      console.log(formData)
       alert(response.data)
       alert("Registration done successfully")
        //clear all fields

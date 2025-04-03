@@ -1,23 +1,20 @@
-import express from "express";
-import addUser from "../controller/user_controller.js";
-import { userLogin } from "../controller/user_controller.js";
+
 import multer from "multer";
-import path from "path";
 
 // Configure Multer
 const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, "public/uploads/");  // Ensure directory exists
-  },
+  destination:"public/uploads/", 
   filename: (req, file, cb) => {
-    cb(null, Date.now() + path.extname(file.originalname));  // Unique file name
+    const unixtime = Date.now()
+    const name_ary = file.originalname.split(".")
+    cb(null, `${file.originalname.split(0,-1)}_${unixtime}.${name_ary[name_ary.length-1]}`)
+
   },
 });
 
-const upload = multer({ storage });
 
-const userRoute = express.Router();
-userRoute.post("/addUser", upload.single("pic"), addUser);
-userRoute.post("/userLogin", userLogin);
+const image_upload = multer({storage:storage}).single("pic") // pic is the name of file input in input file tag
 
-export default userRoute;
+
+export {image_upload}
+

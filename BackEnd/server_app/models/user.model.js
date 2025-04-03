@@ -5,9 +5,9 @@ const userSchema = new mongoose.Schema({
   name: { type: String, required: true },
   phone: { type: String, required: true },
   address: { type: String, required: true },
-  gender: { type: String, required: true },
+  gender: { type: String},
   city: { type: String, required: true },
-  file: { type: String, required: false },
+  pic: { type: String,},
   date: { type: String, default: () => new Date().toISOString().split("T")[0] },
 });
 const user = mongoose.model("user", userSchema);
