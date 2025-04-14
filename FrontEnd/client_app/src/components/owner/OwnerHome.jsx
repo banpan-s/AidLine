@@ -8,27 +8,27 @@ import axios from "axios";
 
 const UserHome = () => {
   const navigate = useNavigate();
-  const token = localStorage.getItem("key");
-  const URL = "http://localhost:3000/u/getprofile";
+  const tokenEmail = localStorage.getItem("key");
+  const URL = "http://localhost:3000/owner/getProfile";
 
   const [user, setUser] = useState({});
 
   useEffect(() => {
-    if (!token || token == null) {
+    if ( tokenEmail == null) {
       navigate("/u/login");
     } else {
-      fetchUserDetails();
+      fetchUserDetails(tokenEmail);
     }
   }, []);
 
-  const fetchUserDetails = async (token) => {
+  const fetchUserDetails = async (tokenEmail) => {
     try {
-      const params = { token: tokenEmail };   
+      const params = { email: tokenEmail };   
       const serverResponse=await axios.get(URL,{params})
       console.log(serverResponse);
 
       
-      setUser(serverResponse.data.user);
+      setUser(serverResponse.data.data);
     } catch {}
   };
 
@@ -37,7 +37,7 @@ const UserHome = () => {
       <Header />
       <div className="card mx-auto" style={{ width: "18rem", backgroundColor:"red",marginTop:"99px" }}>
         
-        <img src={`http:/localhost:3000/images/${user.pic}`} className="card-img-top" alt="..." />
+        <img src={`http://localhost:3000/uploads/${user.pic}`} className="card-img-top" alt="..." />
         <div className="card-body">
           <h5 className="card-title">Phone : {user.phone}</h5>
           <p className="card-text">City : {user.city} </p>

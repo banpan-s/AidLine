@@ -48,7 +48,7 @@ return(
                 <a className="nav-link text-white" href="userfeedback"><i className="fas fa-comments"></i> Feedback</a>
             </li>
             <li className="nav-item">
-                <a className="nav-link text-white" href="#"><i className="fas fa-tasks"></i> Tasks</a>
+                <a className="nav-link text-white" href="/viewqueue"><i className="fas fa-tasks"></i> View Queue</a>
             </li>
             <li className="nav-item">
                 <button onClick={logout} type="button" className="btn btn_link">

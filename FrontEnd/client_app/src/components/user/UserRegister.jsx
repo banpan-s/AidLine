@@ -1,13 +1,13 @@
 import React, { useState } from "react";
-import axios from 'axios'
+import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import Header from "../common/Header";
 import Footer from "../common/Footer";
 
 function UserRegister() {
-  const navigate=useNavigate()
-   const URL="http://localhost:3000/user/addUser"
- 
+  const navigate = useNavigate();
+  const URL = "http://localhost:3000/user/addUser";
+
   const [userData, setUserData] = useState({
     email: "",
     password: "",
@@ -17,54 +17,34 @@ function UserRegister() {
     city: "",
     address: "",
   });
+
   const [userPic, setUserPic] = useState(null);
 
   const fetchData = (e) => {
     const { name, value, type, files } = e.target;
-    
+
     if (type === "file") {
-      console.log(files[0])
-      setUserPic(files[0]); //it is an object->
-     
-      
-      
+      setUserPic(files[0]);
     } else {
       setUserData({ ...userData, [name]: value });
     }
   };
 
-  const submitData=async(e)=>{
+  const submitData = async (e) => {
+    e.preventDefault();
 
-e.preventDefault()
-alert("in submit")
-console.log(userPic);
-//setting all data in formData object
-  const formData = new FormData();
-    formData.append("email", userData.email);
-    formData.append("password", userData.password);
-    formData.append("name", userData.name);
-    formData.append("phone", userData.phone);
-    formData.append("gender", userData.gender || "Not specified");  // 👈 Fix: Ensure gender is sent
-    // formData.append("gender", userData.gender);
-    formData.append("city", userData.city);
-    formData.append("address", userData.address);
-    //  formData.append("pic", userPic); 
-     // Only append file if it's selected
-  if (userPic) {
-    formData.append("pic", userPic);
-  }
+    const formData = new FormData();
+    for (let key in userData) {
+      formData.append(key, userData[key]);
+    }
+    if (userPic) formData.append("pic", userPic);
 
-    try{
-      const response=await axios.post(URL,formData)
-      console.log(response);
-      console.log(formData)
-      alert(response.data)
-      alert("Registration done successfully")
-       //clear all fields
-     
-        
+    try {
+      const response = await axios.post(URL, formData);
+      alert(response.data);
+      alert("Registration done successfully");
 
-       setUserData({
+      setUserData({
         email: "",
         password: "",
         name: "",
@@ -74,229 +54,179 @@ console.log(userPic);
         address: "",
       });
       setUserPic(null);
-      navigate("/userlogin")
-
+      navigate("/userlogin");
+    } catch (err) {
+      console.log(err.message);
     }
-    catch(err){console.log(err.message);
-    }
-
-
-  }
+  };
 
   return (
     <>
-    <Header/>
-    
-      <div className="w-100 text-center">
-        <h1>User Registration</h1>
-      </div>
-     
-      <div className="row justify-content-center align-items-center h-50 w-100">
-        <div className="col-md-6 pt-2">
+      <Header />
+
+      {/* Fullscreen Fixed Background Video */}
+      <video
+        autoPlay
+        loop
+        muted
+        playsInline
+        style={{
+          position: "fixed",
+          top: 0,
+          left: 0,
+          width: "100%",
+          height: "100%",
+          objectFit: "cover",
+          zIndex: "-1",
+        }}
+      >
+        <source src="/videos/v.mp4" type="video/mp4" />
+      </video>
+
+      <div className="d-flex justify-content-center align-items-center py-5" style={{ minHeight: "100vh" }}>
+        <div
+          className="card shadow-lg p-4 bg-dark bg-opacity-75 text-white"
+          style={{ width: "90%", maxWidth: "600px", borderRadius: "20px" }}
+        >
+          <h3 className="text-center mb-4 text-info fw-bold">User Registration</h3>
           <form onSubmit={submitData}>
-          {/* Email Input */}
-          <div className="input-group mb-3">
-            <span className="input-group-text">
-              <i className="fas fa-envelope-square"></i>
-            </span>
-            <div className="form-floating">
+            {/* Email */}
+            <div className="input-group mb-3">
+              <span className="input-group-text bg-info text-white">
+                <i className="fas fa-envelope-square"></i>
+              </span>
               <input
                 type="email"
-                className="form-control"
-                id="email"
-                placeholder="email"
+                className="form-control bg-dark text-white border-info"
+                placeholder="Email"
                 name="email"
                 value={userData.email}
                 onChange={fetchData}
+                required
               />
-              <label htmlFor="email">Email</label>
             </div>
-          </div>
 
-          {/* Password Input */}
-          <div className="input-group mb-3">
-            <span className="input-group-text">
-              <i className="fas fa-key"></i>
-            </span>
-            <div className="form-floating">
+            {/* Password */}
+            <div className="input-group mb-3">
+              <span className="input-group-text bg-info text-white">
+                <i className="fas fa-key"></i>
+              </span>
               <input
                 type="password"
-                className="form-control"
-                id="password"
-                placeholder="password"
+                className="form-control bg-dark text-white border-info"
+                placeholder="Password"
                 name="password"
                 value={userData.password}
                 onChange={fetchData}
+                required
               />
-              <label htmlFor="password">Password</label>
             </div>
-          </div>
 
-          {/* Username Input */}
-          <div className="input-group mb-3">
-            <span className="input-group-text">
-              <i className="fas fa-user-circle"></i>
-            </span>
-            <div className="form-floating">
+            {/* Name */}
+            <div className="input-group mb-3">
+              <span className="input-group-text bg-info text-white">
+                <i className="fas fa-user-circle"></i>
+              </span>
               <input
                 type="text"
-                className="form-control"
-                id="name"
-                placeholder="username"
+                className="form-control bg-dark text-white border-info"
+                placeholder="Name"
                 name="name"
                 value={userData.name}
                 onChange={fetchData}
+                required
               />
-              <label htmlFor="name">Name</label>
             </div>
-          </div>
 
-          {/* Phone Input */}
-          <div className="input-group mb-3">
-            <span className="input-group-text">
-              <i className="fas fa-phone"></i>
-            </span>
-            <div className="form-floating">
+            {/* Gender */}
+            <div className="input-group mb-3">
+              <span className="input-group-text bg-info text-white">
+                <i className="fas fa-venus-mars"></i>
+              </span>
+              <select
+                className="form-select bg-dark text-white border-info"
+                name="gender"
+                value={userData.gender}
+                onChange={fetchData}
+                required
+              >
+                <option value="">Select Gender</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+
+            {/* Phone */}
+            <div className="input-group mb-3">
+              <span className="input-group-text bg-info text-white">
+                <i className="fas fa-phone"></i>
+              </span>
               <input
                 type="tel"
-                className="form-control"
-                id="phone"
-                placeholder="phone"
+                className="form-control bg-dark text-white border-info"
+                placeholder="Phone"
                 name="phone"
                 value={userData.phone}
                 onChange={fetchData}
+                required
               />
-              <label htmlFor="phone">Phone</label>
             </div>
-          </div>
 
-          {/* Address Input */}
-          <div className="input-group mb-3">
-            <span className="input-group-text">
-              <i className="fas fa-map"></i>
-            </span>
-            <div className="form-floating">
+            {/* City */}
+            <div className="input-group mb-3">
+              <span className="input-group-text bg-info text-white">
+                <i className="fas fa-city"></i>
+              </span>
+              <input
+                type="text"
+                className="form-control bg-dark text-white border-info"
+                placeholder="City"
+                name="city"
+                value={userData.city}
+                onChange={fetchData}
+                required
+              />
+            </div>
+
+            {/* Address */}
+            <div className="input-group mb-3">
+              <span className="input-group-text bg-info text-white">
+                <i className="fas fa-map"></i>
+              </span>
               <textarea
-                className="form-control"
-                id="address"
-                placeholder="address"
+                className="form-control bg-dark text-white border-info"
+                placeholder="Address"
                 name="address"
                 value={userData.address}
                 onChange={fetchData}
-              />
-              <label htmlFor="address">Address</label>
+                required
+              ></textarea>
             </div>
-          </div>
 
-          {/* Gender Radio Buttons */}
-          <div className="text-center mb-3">
-            <div className="form-check form-check-inline">
-              <input
-                className="form-check-input"
-                type="radio"
-                name="gender"
-                id="male"
-                value="male"
-                checked={userData.gender === "male"}
-                onChange={fetchData}
-              />
-              <label className="form-check-label" htmlFor="male">
-                Male
-              </label>
-            </div>
-            <div className="form-check form-check-inline">
-              <input
-                className="form-check-input"
-                type="radio"
-                name="gender"
-                id="female"
-                value="female"
-                checked={userData.gender === "female"}
-                onChange={fetchData}
-              />
-              <label className="form-check-label" htmlFor="female">
-                Female
-              </label>
-            </div>
-            <div className="form-check form-check-inline">
-              <input
-                className="form-check-input"
-                type="radio"
-                name="gender"
-                id="other"
-                value="other"
-                checked={userData.gender === "other"}
-                onChange={fetchData}
-              />
-              <label className="form-check-label" htmlFor="other">
-                Other
-              </label>
-            </div>
-          </div>
-
-          {/* City Dropdown */}
-          <div className="input-group mb-3">
-            <span className="input-group-text">
-              <i className="fas fa-map-marker-alt"></i>
-            </span>
-            <select
-              className="form-select"
-              aria-label="Default select example"
-              name="city"
-              value={userData.city}
-              onChange={fetchData}
-            >
-              <option value="">Select City</option>
-              <option value="lucknow">Lucknow</option>
-              <option value="Delhi">Delhi</option>
-              <option value="varanasi">Varanasi</option>
-            </select>
-          </div>
-
-          {/* File Input */}
-          <div className="input-group mb-3">
-            <span className="input-group-text">
-              <i className="fas fa-user"></i>
-            </span>
-            <div className="form-floating">
+            {/* Profile Picture */}
+            <div className="input-group mb-4">
+              <span className="input-group-text bg-info text-white">
+                <i className="fas fa-upload"></i>
+              </span>
               <input
                 type="file"
                 name="pic"
-                className="form-control"
+                className="form-control bg-dark text-white border-info"
                 onChange={fetchData}
               />
             </div>
-          </div>
 
-          {/* Submit Button */}
-          <div className="text-center">
-            <button className="btn btn-primary">Submit</button>
-          </div>
+            <div className="d-grid">
+              <button className="btn btn-info rounded-pill fw-semibold">Register</button>
+            </div>
           </form>
         </div>
       </div>
-      <footer/>
 
+      <Footer />
     </>
   );
 }
 
 export default UserRegister;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

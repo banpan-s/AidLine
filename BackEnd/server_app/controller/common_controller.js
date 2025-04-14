@@ -6,7 +6,7 @@ export const addContact = async (request, response) => {
   // {userName:"scott",userEmail:"scott", userQuery:"how are you"}
 
   //  object destructing
-  const { userName, userEmail, userQuery } = contactObject;
+  const { userName, userEmail, userQuery } = contactObject;   //
   try {
     console.log(userName, contactObject);
     const contactDoc = new contact({ userName, userEmail, userQuery });

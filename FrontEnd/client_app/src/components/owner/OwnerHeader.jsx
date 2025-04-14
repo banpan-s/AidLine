@@ -19,7 +19,7 @@ return(
 
 <div className="offcanvas offcanvas-start text-bg-primary" tabIndex="-1" id="sidebarMenu" aria-labelledby="sidebarMenuLabel">
     <div className="offcanvas-header">
-        <h5 className="offcanvas-title" id="sidebarMenuLabel"><i className="fas fa-user"></i> Welcome, User!</h5>
+        <h5 className="offcanvas-title" id="sidebarMenuLabel"><i className="fas fa-user"></i> Welcome, Owner!</h5>
         <button type="button" className="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
     </div>
     
@@ -35,7 +35,7 @@ return(
                 <a className="nav-link text-white" href="#"><i className="fas fa-comments"></i> Feedback</a>
             </li>
             <li className="nav-item">
-                <a className="nav-link text-white" href="#"><i className="fas fa-tasks"></i> Tasks</a>
+                <a className="nav-link text-white" href="/createqueue"><i className="fas fa-tasks"></i> Create Queue</a>
             </li>
             <li className="nav-item">
                 <button type="button" className="btn btn_link">
