@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
+import Header from "./UserHeader";
 
 function ViewQueue() {
   const [queue, setQueue] = useState([]);
@@ -12,7 +13,7 @@ function ViewQueue() {
 
   const fetchData = async () => {
     try {
-      const res = await axios.get(URL);
+      const res = await axios.get(URL);           
       console.log(res.data.queueData);
       setQueue(res.data.queueData);
     } catch (error) {
@@ -20,14 +21,17 @@ function ViewQueue() {
     }
   };
 
-  const bookQueue=async(item)=>{
-
+  //booking your number
+  const bookQueue=async(e,item)=>{
+    alert("function call")
+    e.preventDefault();
     const params={ queueID:item._id,userEmail:tokenEmail}
     try {
       
       const res = await axios.get(BookURL,{params});
     //  console.log(res.data.queueData);
       //setQueue(res.data.queueData);
+      alert("booking done")
     } catch (error) {
       console.log(error);
     }
@@ -37,7 +41,8 @@ function ViewQueue() {
 
   return (     
     <>
-    <div className="container py-5">
+    <Header/>
+    <div className="container py-5 mt-5">
       <h2 className="text-center mb-5 fw-bold text-primary">📋 Explore Queues</h2>
       <div className="row g-4">
         {queue.length === 0 ? (
@@ -67,7 +72,7 @@ function ViewQueue() {
                   <p className="card-text mb-3">
                     ⌛ <strong>End:</strong> {item.endTime}
                   </p>
-                  <button className="btn btn-outline-primary w-100" onClick={()=>bookQueue(item)}>
+                  <button className="btn btn-outline-primary w-100" onClick={(e)=>bookQueue(e,item)}>
                     ➕ Join Queue
                   </button>
                 </div>

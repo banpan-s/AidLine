@@ -51,6 +51,9 @@ return(
                 <a className="nav-link text-white" href="/viewqueue"><i className="fas fa-tasks"></i> View Queue</a>
             </li>
             <li className="nav-item">
+                <a className="nav-link text-white" href="/viewbooking"><i className="fas fa-tasks"></i> View Booking</a>
+            </li>
+            <li className="nav-item">
                 <button onClick={logout} type="button" className="btn btn_link">
              <i className="fas fa-sign-out-alt" ></i> Logout</button>
             </li>

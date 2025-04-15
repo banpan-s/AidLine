@@ -1,12 +1,63 @@
-import { request, response } from "express";
+// import { request, response } from "express";
 import ownerqueue from "../models/ownerqueue.model.js";
-// import bookqueue from "../models/user.bookqueue.model.js";
+import bookqueue from "../models/user.bookqueue.model.js";
 import User from "../models/user.model.js"; 
 
-//user fetch data
-const getUserData=async(request,response)=>{
-    
-}
+
+// Controller to user book a queue
+export const bookQueue = async (req, res) => {
+    const { queueID, userEmail } = req.query;
+  
+    try {
+      // 1. Check if queue exists
+    //   const queue = await ownerqueue.findById(queueID);
+    //   if (!queue) {
+    //     return res.status(404).json({ message: "Queue not found" });
+    //   }
+  
+    //   // 2. Check if user already booked this queue
+    //   const alreadyBooked = await bookqueue.findOne({ queueID, userEmail });
+    //   if (alreadyBooked) {
+    //     return res.status(400).json({ message: "You have already booked this queue." });
+    //   }
+  
+      // 3. Count current bookings to assign token number
+      const existingBookings = await bookqueue.find({ queueID });
+      const tokenNumber = existingBookings.length + 1;
+  
+      // 4. Get current date and time
+      const now = new Date();
+      const checkInDate = now.toISOString().split("T")[0];
+      const checkInTime = now.toTimeString().split(" ")[0];
+  
+      // 5. Create and save booking
+      const newBooking = new bookqueue({
+        queueID,
+        userEmail,
+        tokenNo: tokenNumber,
+        positionInQueue: tokenNumber,
+        estimatedWaitTime: "10 mins", // Placeholder, you can calculate based on token
+        status: "pending",
+        checkInTime,
+        checkInDate,
+      });
+  
+      await newBooking.save();
+  
+      // 6. Send response
+      res.status(201).json({
+        message: "Booking successful",
+        tokenNumber,
+        checkInTime,
+        checkInDate,
+      });
+  
+    } catch (error) {
+      console.error("Booking error:", error.message);
+      res.status(500).json({ message: "Server error", error: error.message });
+    }
+  };
+
 
 
 //save user BookQueue data 
@@ -21,31 +72,27 @@ export const addBookqueue= async(request,response)=>{
 
 
 //user edit profile
-export const editProfile = async (request, response) => {
-    const userObject = request.body;
-    const { phone, city, address } = userObject;
-    const { email } = request.query;
+export const editProfile=async(request,response)=>{
+    const userObject=request.body
+    const{phone,city,address}=userObject
+    const{email}=request.query
+    console.log(`email is ${email}`)
+    console.log(`phoone is ${phone}`)
+    console.log(`city is ${city}`)
+    console.log(`address is ${address}`)
+   response.send("data send")
+    try{
 
-    console.log(`email is ${email}`);
-    console.log(`phone is ${phone}`);
-    console.log(`city is ${city}`);
-    console.log(`address is ${address}`);
-
-    try {
-        const filterCondition = { email: email };
-        const modifiedData = { $set: { phone, city, address } };
-        console.log(modifiedData);
-
-        const updateStatus = await User.updateOne(filterCondition, modifiedData);
-        console.log(`update status is ${JSON.stringify(updateStatus)}`);
-
-        response.json({ updateStatus });
-    } catch (err) {
-        console.error(err.message);
-        response.status(500).json({ error: "Internal Server Error" });
-    }
-};
-
+        const filterCondition={email:email}
+        const modifiedData={$set:{phone:phone,city:city,address:address}}
+        console.log({phone:phone,city:city,address:address})
+   const updateStatus= await User.updateOne(filterCondition,modifiedData)
+  console.log(`updated status is ${updateStatus}`)
+  response.json({"updateStatus":updateStatus})
+    
+    }  
+    catch(err){console.log(err.message);}
+}
 
 //user register 
 async function addUser(request, response) { 
