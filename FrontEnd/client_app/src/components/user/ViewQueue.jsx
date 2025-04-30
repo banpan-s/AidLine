@@ -1,8 +1,13 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
 import Header from "./UserHeader";
+import { useNavigate } from 'react-router-dom';
+
+
 
 function ViewQueue() {
+  const navigate = useNavigate();
+
   const [queue, setQueue] = useState([]);
   const [filteredQueue, setFilteredQueue] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
@@ -38,6 +43,7 @@ function ViewQueue() {
     try {
       await axios.get(BookURL, { params });
       alert("Booking done");
+      navigate("/viewbooking");
     } catch (error) {
       console.log(error);
     }

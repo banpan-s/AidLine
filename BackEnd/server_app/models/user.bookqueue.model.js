@@ -9,7 +9,8 @@ const bookqueueSchema = new mongoose.Schema({
   status: { type: String, default: "pending" },
   checkInTime: { type: String, required: true },
   checkInDate: { type: String, required: true },
-  // queueName: { type: String, required: true },
+  queueName: { type: String, required: true },
+
 }, { timestamps: true });
 
 const bookqueue = mongoose.model("bookqueue", bookqueueSchema);
