@@ -38,6 +38,9 @@ return(
                 <a className="nav-link text-white" href="/createqueue"><i className="fas fa-tasks"></i> Create Queue</a>
             </li>
             <li className="nav-item">
+                <a className="nav-link text-white" href="/viewownerqueue"><i className="fas fa-tasks"></i> View Queue</a>
+            </li>
+            <li className="nav-item">
                 <button type="button" className="btn btn_link">
              <i className="fas fa-sign-out-alt"></i> Logout</button>
             </li>

@@ -16,6 +16,7 @@ import OwnerRegister from "./components/owner/OwnerRegisters";
 import Ownerlogin from "./components/owner/OwnerLogin.jsx";
 import OwnerHome from "./components/owner/OwnerHome.jsx";
 import CreateQueue from "./components/owner/CreateQueue.jsx";
+import OwnerViewQueue from "./components/owner/OwnerViewQueue.jsx";
 
 
 //user path
@@ -42,6 +43,7 @@ function RoutePath() {
           <Route path="/ownerRegister" element={<OwnerRegister />}></Route>
           <Route path="/ownerhome" element={<OwnerHome />}></Route>
           <Route path="/createqueue" element={<CreateQueue/>}></Route>
+          <Route path="/viewownerqueue" element={<OwnerViewQueue/>}></Route>
 
 
           <Route path="/userRegister" element={<UserRegister />}></Route>

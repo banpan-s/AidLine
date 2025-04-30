@@ -4,6 +4,36 @@ import owner from "../models/owner.model.js";
 import ownerqueue from "../models/ownerqueue.model.js";
 
 
+
+
+//view owner creat queue
+export const getOwnerQueue = async (req, res) => {
+    try {
+        const { email } = req.query;
+        console.log("axytrd");
+        
+        console.log("zxcv",email);
+        
+      
+  
+      if (!email) {
+        return res.status(201).json({ message: "Owner email is required." });
+      }
+  
+      const queues = await ownerqueue.find({ email });
+  
+      res.status(200).json(queues);
+    } catch (error) {
+      console.error("Error fetching owner's queues:", error.message);
+      res.status(500).json({ message: "Server error", error: error.message });
+    }
+  };
+
+
+
+
+
+
 //save owner registration data 
 export const addowner=async(request,response)=>{
     const ownerData= request.body

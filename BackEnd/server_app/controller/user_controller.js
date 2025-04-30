@@ -4,6 +4,9 @@ import bookqueue from "../models/user.bookqueue.model.js";
 import User from "../models/user.model.js"; 
 
 
+
+
+
 // Controller to user book a queue
 export const bookQueue = async (req, res) => {
     const { queueID, userEmail } = req.query;
@@ -20,7 +23,8 @@ export const bookQueue = async (req, res) => {
     //   if (alreadyBooked) {
     //     return res.status(400).json({ message: "You have already booked this queue." });
     //   }
-  
+          
+    // const queueName = queue.queueName;
       // 3. Count current bookings to assign token number
       const existingBookings = await bookqueue.find({ queueID });
       const tokenNumber = existingBookings.length + 1;
@@ -40,6 +44,8 @@ export const bookQueue = async (req, res) => {
         status: "pending",
         checkInTime,
         checkInDate,
+        // queueName,
+        
       });
   
       await newBooking.save();
@@ -59,6 +65,27 @@ export const bookQueue = async (req, res) => {
   };
 
 
+
+  //view booking detail
+export const getUserBookings = async (req, res) => {
+    console.log("hello");
+    
+  const { userEmail } = req.query; 
+
+  try {
+    if (!userEmail) {
+      return res.status(400).json({ message: "User email is required" });
+    }
+
+    const bookings = await bookqueue.find({ userEmail });
+
+    res.status(200).json({ bookings });
+  } catch (error) {
+    console.error("Error fetching bookings:", error.message);
+    res.status(500).json({ message: "Server error", error: error.message });
+  }
+};
+  
 
 //save user BookQueue data 
 export const addBookqueue= async(request,response)=>{
