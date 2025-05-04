@@ -78,6 +78,11 @@ function Header() {
               </a>
             </li>
             <li className="nav-item">
+              <a className="nav-link text-white" href="/addnotice">
+                <i className="fas fa-tasks"></i> Create Notices
+              </a>
+            </li>
+            <li className="nav-item">
               <button type="button" className="btn btn_link" onClick={logout}>
                 <i className="fas fa-sign-out-alt"></i> Logout
               </button>

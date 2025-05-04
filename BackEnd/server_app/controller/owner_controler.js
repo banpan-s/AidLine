@@ -2,6 +2,7 @@ import owner from "../models/owner.model.js";
 import ownerqueue from "../models/ownerqueue.model.js";
 import multer from "multer";
 import path from "path";
+import addnotice from "../models/addnote.model.js";
 
 // Multer setup for file upload
 const storage = multer.diskStorage({
@@ -136,6 +137,33 @@ export const updateOwnerProfile = async (req, res) => {
     res.status(200).json({ message: "Profile updated successfully", data: updatedOwner });
   } catch (error) {
     console.error("Error updating owner profile:", error);
+    res.status(500).json({ message: "Server error", error: error.message });
+  }
+};
+
+// Controller function to save addnotice text
+export const saveAddNoticeText = async (req, res) => {
+  try {
+    const { text } = req.body;
+    if (!text) {
+      return res.status(400).json({ message: "Text is required" });
+    }
+    const newNotice = new addnotice({ text });
+    await newNotice.save();
+    res.status(201).json({ message: "Notice text saved successfully", data: newNotice });
+  } catch (error) {
+    console.error("Error saving notice text:", error);
+    res.status(500).json({ message: "Server error", error: error.message });
+  }
+};
+
+// Controller function to get all addnotice texts
+export const getAllAddNotices = async (req, res) => {
+  try {
+    const notices = await addnotice.find({});
+    res.status(200).json({ data: notices });
+  } catch (error) {
+    console.error("Error fetching notices:", error);
     res.status(500).json({ message: "Server error", error: error.message });
   }
 };

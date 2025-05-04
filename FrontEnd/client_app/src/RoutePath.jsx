@@ -7,6 +7,7 @@ import UserFeedback from "./components/user/UserFeedback.jsx";
 
 //usercontact
 import AllContacts from "./components/admin/AllContacts.jsx";
+import Notices from "./components/common/Notices.jsx";
 
 //admin path
 import Adminlogin from "./components/admin/AdminLogins.jsx";
@@ -19,6 +20,8 @@ import CreateQueue from "./components/owner/CreateQueue.jsx";
 import OwnerViewQueue from "./components/owner/OwnerViewQueue.jsx";
 import OwnerEditProfile from "./components/owner/OwnerEditProfile.jsx";
 import UpdateQueuePage from "./components/owner/UpdateQueuePage.jsx";
+import AddNotice from "./components/owner/AddNotice.jsx";
+
 
 //user path
 import Userlogin from "./components/user/UserLogin.jsx";
@@ -26,18 +29,21 @@ import UserRegister from "./components/user/UserRegister.jsx";
 import UserHome from "./components/user/UserHome.jsx";
 import UserEditProfile from "./components/user/UserEditProfile";
 import ViewQueue from "./components/user/ViewQueue.jsx";
-import BookQueue from "./components/user/BookQueue.jsx";
 import ViewBooking from "./components/user/ViewBooking.jsx";
+import AdminHome from "./components/admin/AdminHome.jsx";
 
 function RoutePath() {
   return (
     <>
       <BrowserRouter>
         <Routes>
-          <Route path="/adminlogin" element={<Adminlogin />}></Route>
-
           <Route path="/" element={<App />}></Route>
+
+          <Route path="/adminlogin" element={<Adminlogin />}></Route>
+          <Route path="/adminhome" element={<AdminHome />}></Route>
+
           <Route path="/Contact" element={<Contact />}></Route>
+          <Route path="/viewnotice" element={<Notices />}></Route>
 
           <Route path="/ownerlogin" element={<Ownerlogin />}></Route>
           <Route path="/ownerRegister" element={<OwnerRegister />}></Route>
@@ -46,6 +52,7 @@ function RoutePath() {
           <Route path="/viewownerqueue" element={<OwnerViewQueue/>}></Route>
           <Route path="/ownereditprofile" element={<OwnerEditProfile />}></Route>
           <Route path="/owner/viewQueue" element={<UpdateQueuePage />}></Route>
+          <Route path="/addnotice" element={<AddNotice />}></Route>
 
           <Route path="/userRegister" element={<UserRegister />}></Route>
           <Route path="/userlogin" element={<Userlogin />}></Route>

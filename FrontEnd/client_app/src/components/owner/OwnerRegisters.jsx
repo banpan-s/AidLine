@@ -32,14 +32,9 @@ function OwnerRegister() {
     event.preventDefault();
 
     const formData = new FormData();
-    for (let key in registrationData) {
-      formData.append(key, registrationData[key]);
-    }
+    for (let key in registrationData) {formData.append(key, registrationData[key]);}
 
-    const serverResponse = await axios.post(
-      "http://localhost:3000/owner/addowner",
-      formData
-    );
+    const serverResponse = await axios.post("http://localhost:3000/owner/addowner",formData);
     alert(serverResponse.data.message);
     navigate("/ownerlogin");
   };
