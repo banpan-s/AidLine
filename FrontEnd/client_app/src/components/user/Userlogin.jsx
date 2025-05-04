@@ -24,6 +24,7 @@ function Userlogin() {
       if (serverResponse.data.status === "Success") {
         localStorage.setItem("key", serverResponse.data.token);
         navigate("/userhome");
+        alert("hello")
       } else {
         alert(serverResponse.data.message);
       }

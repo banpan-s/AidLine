@@ -17,7 +17,8 @@ import Ownerlogin from "./components/owner/OwnerLogin.jsx";
 import OwnerHome from "./components/owner/OwnerHome.jsx";
 import CreateQueue from "./components/owner/CreateQueue.jsx";
 import OwnerViewQueue from "./components/owner/OwnerViewQueue.jsx";
-
+import OwnerEditProfile from "./components/owner/OwnerEditProfile.jsx";
+import UpdateQueuePage from "./components/owner/UpdateQueuePage.jsx";
 
 //user path
 import Userlogin from "./components/user/UserLogin.jsx";
@@ -27,7 +28,6 @@ import UserEditProfile from "./components/user/UserEditProfile";
 import ViewQueue from "./components/user/ViewQueue.jsx";
 import BookQueue from "./components/user/BookQueue.jsx";
 import ViewBooking from "./components/user/ViewBooking.jsx";
-
 
 function RoutePath() {
   return (
@@ -44,7 +44,8 @@ function RoutePath() {
           <Route path="/ownerhome" element={<OwnerHome />}></Route>
           <Route path="/createqueue" element={<CreateQueue/>}></Route>
           <Route path="/viewownerqueue" element={<OwnerViewQueue/>}></Route>
-
+          <Route path="/ownereditprofile" element={<OwnerEditProfile />}></Route>
+          <Route path="/owner/viewQueue" element={<UpdateQueuePage />}></Route>
 
           <Route path="/userRegister" element={<UserRegister />}></Route>
           <Route path="/userlogin" element={<Userlogin />}></Route>

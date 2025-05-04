@@ -12,7 +12,7 @@ const OwnerViewQueue = () => {
   useEffect(() => {
     const fetchQueues = async () => {
       try {
-        const response = await axios.get("http://localhost:3000/owner/getAllQueues", {
+        const response = await axios.get("http://localhost:3000/owner/getOwnerQueue", {
           params: { email: localStorage.getItem("key") },
         });
         setQueues(response.data);

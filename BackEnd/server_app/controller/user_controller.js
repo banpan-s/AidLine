@@ -87,10 +87,10 @@ export const editProfile = async (request, response) => {
   const { phone, city, address } = userObject;
   const { email } = request.query;
   console.log(`email is ${email}`);
-  console.log(`phoone is ${phone}`);
+  console.log(`phone is ${phone}`);
   console.log(`city is ${city}`);
   console.log(`address is ${address}`);
-  response.send("data send");
+
   try {
     const filterCondition = { email: email };
     const modifiedData = {
@@ -102,6 +102,7 @@ export const editProfile = async (request, response) => {
     response.json({ updateStatus: updateStatus });
   } catch (err) {
     console.log(err.message);
+    response.status(500).json({ message: "Server error", error: err.message });
   }
 };
 
