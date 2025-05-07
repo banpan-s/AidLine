@@ -20,7 +20,9 @@ import CreateQueue from "./components/owner/CreateQueue.jsx";
 import OwnerViewQueue from "./components/owner/OwnerViewQueue.jsx";
 import OwnerEditProfile from "./components/owner/OwnerEditProfile.jsx";
 import UpdateQueuePage from "./components/owner/UpdateQueuePage.jsx";
+
 import AddNotice from "./components/owner/AddNotice.jsx";
+import OwnerFeedback from "./components/owner/OwnerFeedback.jsx";
 
 
 //user path
@@ -53,6 +55,7 @@ function RoutePath() {
           <Route path="/ownereditprofile" element={<OwnerEditProfile />}></Route>
           <Route path="/owner/viewQueue" element={<UpdateQueuePage />}></Route>
           <Route path="/addnotice" element={<AddNotice />}></Route>
+          <Route path="/ownerfeedback" element={<OwnerFeedback />}></Route>
 
           <Route path="/userRegister" element={<UserRegister />}></Route>
           <Route path="/userlogin" element={<Userlogin />}></Route>

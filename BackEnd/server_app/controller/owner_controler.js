@@ -3,6 +3,8 @@ import ownerqueue from "../models/ownerqueue.model.js";
 import multer from "multer";
 import path from "path";
 import addnotice from "../models/addnote.model.js";
+import OwnerFeedback from "../models/owner.feedback.model.js";
+import bookqueue from "../models/user.bookqueue.model.js";
 
 // Multer setup for file upload
 const storage = multer.diskStorage({
@@ -101,8 +103,6 @@ export const getProfile = async (req, res) => {
   }
 };
 
-import bookqueue from "../models/user.bookqueue.model.js";
-
 // Update owner profile
 export const updateOwnerProfile = async (req, res) => {
   try {
@@ -137,6 +137,26 @@ export const updateOwnerProfile = async (req, res) => {
     res.status(200).json({ message: "Profile updated successfully", data: updatedOwner });
   } catch (error) {
     console.error("Error updating owner profile:", error);
+    res.status(500).json({ message: "Server error", error: error.message });
+  }
+};
+
+// Owner feedback submission
+export const submitOwnerFeedback = async (req, res) => {
+  try {
+    console.log("submitOwnerFeedback request body:", req.body);
+    const { feedback, ownerEmail } = req.body;
+    if (!feedback || typeof feedback !== "string" || feedback.trim() === "") {
+      return res.status(400).json({ message: "Feedback is required and must be a non-empty string" });
+    }
+    if (!ownerEmail || typeof ownerEmail !== "string" || ownerEmail.trim() === "") {
+      return res.status(400).json({ message: "Owner email is required and must be a non-empty string" });
+    }
+    const newFeedback = new OwnerFeedback({ feedback: feedback.trim(), ownerEmail: ownerEmail.trim() });
+    await newFeedback.save();
+    res.status(200).json({ message: "Owner feedback submitted successfully" });
+  } catch (error) {
+    console.error("Error submitting owner feedback:", error.stack || error);
     res.status(500).json({ message: "Server error", error: error.message });
   }
 };

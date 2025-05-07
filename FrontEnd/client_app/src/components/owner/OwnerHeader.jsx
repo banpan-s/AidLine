@@ -63,7 +63,7 @@ function Header() {
               </a>
             </li>
             <li className="nav-item">
-              <a className="nav-link text-white" href="#">
+              <a className="nav-link text-white" href="/ownerfeedback">
                 <i className="fas fa-comments"></i> Feedback
               </a>
             </li>

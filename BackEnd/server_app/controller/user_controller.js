@@ -71,14 +71,18 @@ export const getUserBookings = async (req, res) => {
   }
 };
 
-//save user BookQueue data
 export const addBookqueue = async (request, response) => {
-  const addBookqueue = request.body;
-  const { userName, userId, contact } = addBookqueue;
-  const bookqueueDb = new bookqueue({ userName, userId, contact });
-  await bookqueueDb.save();
-  response.send("hello");
-  console.log("sucessfull");
+  try {
+    const addBookqueue = request.body;
+    const { userName, userId, contact } = addBookqueue;
+    const bookqueueDb = new bookqueue({ userName, userId, contact });
+    await bookqueueDb.save();
+    response.send("hello");
+    console.log("sucessfull");
+  } catch (error) {
+    console.error("Error saving bookqueue:", error);
+    response.status(500).json({ message: "Server error", error: error.message });
+  }
 };
 
 //user edit profile
@@ -134,20 +138,15 @@ async function addUser(request, response) {
 }
 export default addUser;
 
-//check user login
 export const userLogin = async (request, response) => {
   const userData = request.body;
   const { userID, userPassword } = userData;
-
-  console.log(request);
-  console.log("User Login Attempt");
 
   try {
     const userObject = await User.findOne({ email: userID });
 
     if (userObject != null) {
       if (userObject.password === userPassword) {
-        console.log("Password matched:", userObject.password);
         return response.json({
           message: "Hello " + userObject.email,
           status: "Success",
@@ -160,20 +159,20 @@ export const userLogin = async (request, response) => {
       return response.json({ message: "Email does not exist" });
     }
   } catch (err) {
-    console.log(err.message);
+    console.error("User login error:", err);
+    response.status(500).json({ message: "Server error", error: err.message });
   }
 };
 
-// Get user profile
 export const getProfile = async (req, res) => {
   const { email } = req.query;
 
   try {
     const userObject = await User.findOne({ email: email });
-    console.log(userObject);
     res.status(200).json({ userObject });
   } catch (err) {
-    console.log(err.message);
+    console.error("Get profile error:", err);
+    res.status(500).json({ message: "Server error", error: err.message });
   }
 };
 
@@ -185,5 +184,23 @@ export const getQueue = async (req, res) => {
     res.status(201).json({ queueData });
   } catch (error) {
     console.log(error);
+  }
+};
+
+import Feedback from "../models/user.feedback.model.js";
+
+// User feedback submission
+export const submitFeedback = async (req, res) => {
+  try {
+    const { feedback, userEmail } = req.body;
+    if (!feedback) {
+      return res.status(400).json({ message: "Feedback is required" });
+    }
+    const newFeedback = new Feedback({ feedback, userEmail });
+    await newFeedback.save();
+    res.status(200).json({ message: "Feedback submitted successfully" });
+  } catch (error) {
+    console.error("Error submitting feedback:", error);
+    res.status(500).json({ message: "Server error", error: error.message });
   }
 };
