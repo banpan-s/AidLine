@@ -10,6 +10,7 @@ function Ownerlogin() {
     userID: "",
     userPassword: "",
   });
+  const [loginMessage, setLoginMessage] = useState("");
 
   const fetchData = (e) => {
     setContactData({ ...contactData, [e.target.name]: e.target.value });
@@ -21,16 +22,24 @@ function Ownerlogin() {
     e.preventDefault();
     try {
       const serverResponse = await axios.post(URL, contactData);
+      console.log("Login response:", serverResponse.data);
 
       if (serverResponse.data.status === "Success") {
-        alert(serverResponse.data.message);
-        localStorage.setItem("key", serverResponse.data.token);
-        navigate("/ownerhome");
+        setLoginMessage(serverResponse.data.message);
+        // Store ownerEmail in localStorage for feedback usage
+        // Temporary fallback: store userID if token missing
+        const ownerEmail = serverResponse.data.token || contactData.userID;
+        localStorage.setItem("ownerEmail", ownerEmail);
+        console.log("Stored ownerEmail:", ownerEmail);
+        setTimeout(() => {
+          navigate("/ownerhome");
+        }, 1500);
       } else {
-        alert(serverResponse.data.message);
+        setLoginMessage(serverResponse.data.message);
       }
     } catch (err) {
       console.log(err.message);
+      setLoginMessage("An error occurred. Please try again.");
     }
   };
 
@@ -113,6 +122,12 @@ function Ownerlogin() {
                 />
               </div>
             </div>
+
+            {loginMessage && (
+              <div className="mb-3 text-center text-warning fw-semibold">
+                {loginMessage}
+              </div>
+            )}
 
             <div className="d-grid">
               <button

@@ -19,6 +19,7 @@ function UserRegister() {
   });
 
   const [userPic, setUserPic] = useState(null);
+  const [message, setMessage] = useState("");
 
   const fetchData = (e) => {
     const { name, value, type, files } = e.target;
@@ -41,9 +42,7 @@ function UserRegister() {
 
     try {
       const response = await axios.post(URL, formData);
-      alert(response.data);
-      alert("Registration done successfully");
-
+      setMessage("Registration done successfully");
       setUserData({
         email: "",
         password: "",
@@ -54,9 +53,16 @@ function UserRegister() {
         address: "",
       });
       setUserPic(null);
-      navigate("/userlogin");
+      setTimeout(() => {
+        navigate("/userlogin");
+      }, 1500);
     } catch (err) {
       console.log(err.message);
+      if (err.response && err.response.data && err.response.data.message === "this email is already used") {
+        setMessage("this email is already used");
+      } else {
+        setMessage("Registration failed. Please try again.");
+      }
     }
   };
 
@@ -64,7 +70,6 @@ function UserRegister() {
     <>
       <Header />
 
-      {/* Fullscreen Fixed Background Video */}
       <video
         autoPlay
         loop
@@ -90,13 +95,16 @@ function UserRegister() {
         >
           <h3 className="text-center mb-4 text-info fw-bold">User Registration</h3>
           <form onSubmit={submitData}>
+
             {/* Email */}
+            <label htmlFor="email" className="form-label text-white">Email</label>
             <div className="input-group mb-3">
               <span className="input-group-text bg-info text-white">
                 <i className="fas fa-envelope-square"></i>
               </span>
               <input
                 type="email"
+                id="email"
                 className="form-control bg-dark text-white border-info"
                 placeholder="Email"
                 name="email"
@@ -107,12 +115,14 @@ function UserRegister() {
             </div>
 
             {/* Password */}
+            <label htmlFor="password" className="form-label text-white">Password</label>
             <div className="input-group mb-3">
               <span className="input-group-text bg-info text-white">
                 <i className="fas fa-key"></i>
               </span>
               <input
                 type="password"
+                id="password"
                 className="form-control bg-dark text-white border-info"
                 placeholder="Password"
                 name="password"
@@ -123,12 +133,14 @@ function UserRegister() {
             </div>
 
             {/* Name */}
+            <label htmlFor="name" className="form-label text-white">Name</label>
             <div className="input-group mb-3">
               <span className="input-group-text bg-info text-white">
                 <i className="fas fa-user-circle"></i>
               </span>
               <input
                 type="text"
+                id="name"
                 className="form-control bg-dark text-white border-info"
                 placeholder="Name"
                 name="name"
@@ -139,11 +151,13 @@ function UserRegister() {
             </div>
 
             {/* Gender */}
+            <label htmlFor="gender" className="form-label text-white">Gender</label>
             <div className="input-group mb-3">
               <span className="input-group-text bg-info text-white">
                 <i className="fas fa-venus-mars"></i>
               </span>
               <select
+                id="gender"
                 className="form-select bg-dark text-white border-info"
                 name="gender"
                 value={userData.gender}
@@ -158,12 +172,14 @@ function UserRegister() {
             </div>
 
             {/* Phone */}
+            <label htmlFor="phone" className="form-label text-white">Phone</label>
             <div className="input-group mb-3">
               <span className="input-group-text bg-info text-white">
                 <i className="fas fa-phone"></i>
               </span>
               <input
                 type="tel"
+                id="phone"
                 className="form-control bg-dark text-white border-info"
                 placeholder="Phone"
                 name="phone"
@@ -174,12 +190,14 @@ function UserRegister() {
             </div>
 
             {/* City */}
+            <label htmlFor="city" className="form-label text-white">City</label>
             <div className="input-group mb-3">
               <span className="input-group-text bg-info text-white">
                 <i className="fas fa-city"></i>
               </span>
               <input
                 type="text"
+                id="city"
                 className="form-control bg-dark text-white border-info"
                 placeholder="City"
                 name="city"
@@ -190,11 +208,13 @@ function UserRegister() {
             </div>
 
             {/* Address */}
+            <label htmlFor="address" className="form-label text-white">Address</label>
             <div className="input-group mb-3">
               <span className="input-group-text bg-info text-white">
                 <i className="fas fa-map"></i>
               </span>
               <textarea
+                id="address"
                 className="form-control bg-dark text-white border-info"
                 placeholder="Address"
                 name="address"
@@ -205,17 +225,25 @@ function UserRegister() {
             </div>
 
             {/* Profile Picture */}
+            <label htmlFor="pic" className="form-label text-white">Profile Picture</label>
             <div className="input-group mb-4">
               <span className="input-group-text bg-info text-white">
                 <i className="fas fa-upload"></i>
               </span>
               <input
                 type="file"
+                id="pic"
                 name="pic"
                 className="form-control bg-dark text-white border-info"
                 onChange={fetchData}
               />
             </div>
+
+            {message && (
+              <div className="mb-3 text-center text-warning fw-semibold">
+                {message}
+              </div>
+            )}
 
             <div className="d-grid">
               <button className="btn btn-info rounded-pill fw-semibold">Register</button>

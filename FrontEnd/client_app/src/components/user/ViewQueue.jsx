@@ -1,9 +1,7 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
 import Header from "./UserHeader";
-import { useNavigate } from 'react-router-dom';
-
-
+import { useNavigate } from "react-router-dom";
 
 function ViewQueue() {
   const navigate = useNavigate();
@@ -45,7 +43,11 @@ function ViewQueue() {
       alert("Booking done");
       navigate("/viewbooking");
     } catch (error) {
-      console.log(error);
+      if (error.response && error.response.status === 400 && error.response.data.message === "Booking limit reached") {
+        alert("Booking limit reached. You cannot book more than the owner's token limit.");
+      } else {
+        console.log(error);
+      }
     }
   };
 

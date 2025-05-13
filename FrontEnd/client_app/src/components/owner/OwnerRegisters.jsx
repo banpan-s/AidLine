@@ -19,6 +19,8 @@ function OwnerRegister() {
     file: "",
   });
 
+  const [message, setMessage] = useState("");
+
   const fetchData = (event) => {
     const { name, value, type, files } = event.target;
     if (type === "file") {
@@ -32,11 +34,23 @@ function OwnerRegister() {
     event.preventDefault();
 
     const formData = new FormData();
-    for (let key in registrationData) {formData.append(key, registrationData[key]);}
+    for (let key in registrationData) {
+      formData.append(key, registrationData[key]);
+    }
 
-    const serverResponse = await axios.post("http://localhost:3000/owner/addowner",formData);
-    alert(serverResponse.data.message);
-    navigate("/ownerlogin");
+    try {
+      const serverResponse = await axios.post("http://localhost:3000/owner/addowner", formData);
+      setMessage(serverResponse.data.message);
+      setTimeout(() => {
+        navigate("/ownerlogin");
+      }, 1500);
+    } catch (error) {
+      if (error.response && error.response.data && error.response.data.message === "this email is already used") {
+        setMessage("this email is already used");
+      } else {
+        setMessage("Registration failed. Please try again.");
+      }
+    }
   };
 
   return (
@@ -70,7 +84,7 @@ function OwnerRegister() {
         >
           <h3 className="text-center mb-4 text-info fw-bold">Organization Registration</h3>
           <form onSubmit={handleSubmit}>
-
+            <label htmlFor="email" className="form-label text-white">Email</label>
             <div className="input-group mb-3">
               <span className="input-group-text bg-info text-white">
                 <i className="fas fa-envelope"></i>
@@ -79,6 +93,7 @@ function OwnerRegister() {
                 type="email"
                 className="form-control bg-dark text-white border-info"
                 placeholder="Email"
+                id="email"
                 name="email"
                 value={registrationData.email}
                 onChange={fetchData}
@@ -86,6 +101,7 @@ function OwnerRegister() {
               />
             </div>
 
+            <label htmlFor="password" className="form-label text-white">Password</label>
             <div className="input-group mb-3">
               <span className="input-group-text bg-info text-white">
                 <i className="fas fa-key"></i>
@@ -94,6 +110,7 @@ function OwnerRegister() {
                 type="password"
                 className="form-control bg-dark text-white border-info"
                 placeholder="Password"
+                id="password"
                 name="password"
                 value={registrationData.password}
                 onChange={fetchData}
@@ -101,6 +118,7 @@ function OwnerRegister() {
               />
             </div>
 
+            <label htmlFor="orgname" className="form-label text-white">Organization Name</label>
             <div className="input-group mb-3">
               <span className="input-group-text bg-info text-white">
                 <i className="fas fa-building"></i>
@@ -109,6 +127,7 @@ function OwnerRegister() {
                 type="text"
                 className="form-control bg-dark text-white border-info"
                 placeholder="Organization Name"
+                id="orgname"
                 name="orgname"
                 value={registrationData.orgname}
                 onChange={fetchData}
@@ -116,6 +135,7 @@ function OwnerRegister() {
               />
             </div>
 
+            <label htmlFor="ownername" className="form-label text-white">Owner Name</label>
             <div className="input-group mb-3">
               <span className="input-group-text bg-info text-white">
                 <i className="fas fa-user"></i>
@@ -124,6 +144,7 @@ function OwnerRegister() {
                 type="text"
                 className="form-control bg-dark text-white border-info"
                 placeholder="Owner Name"
+                id="ownername"
                 name="ownername"
                 value={registrationData.ownername}
                 onChange={fetchData}
@@ -131,6 +152,7 @@ function OwnerRegister() {
               />
             </div>
 
+            <label htmlFor="phone" className="form-label text-white">Phone</label>
             <div className="input-group mb-3">
               <span className="input-group-text bg-info text-white">
                 <i className="fas fa-phone"></i>
@@ -139,6 +161,7 @@ function OwnerRegister() {
                 type="tel"
                 className="form-control bg-dark text-white border-info"
                 placeholder="Phone"
+                id="phone"
                 name="phone"
                 value={registrationData.phone}
                 onChange={fetchData}
@@ -146,6 +169,7 @@ function OwnerRegister() {
               />
             </div>
 
+            <label htmlFor="address" className="form-label text-white">Address</label>
             <div className="input-group mb-3">
               <span className="input-group-text bg-info text-white">
                 <i className="fas fa-map-marker-alt"></i>
@@ -154,6 +178,7 @@ function OwnerRegister() {
                 type="text"
                 className="form-control bg-dark text-white border-info"
                 placeholder="Address"
+                id="address"
                 name="address"
                 value={registrationData.address}
                 onChange={fetchData}
@@ -161,12 +186,14 @@ function OwnerRegister() {
               />
             </div>
 
+            <label htmlFor="orgtype" className="form-label text-white">Organization Type</label>
             <div className="input-group mb-3">
               <span className="input-group-text bg-info text-white">
                 <i className="fas fa-list"></i>
               </span>
               <select
                 className="form-select bg-dark text-white border-info"
+                id="orgtype"
                 name="orgtype"
                 value={registrationData.orgtype}
                 onChange={fetchData}
@@ -180,6 +207,7 @@ function OwnerRegister() {
               </select>
             </div>
 
+            <label htmlFor="description" className="form-label text-white">Description</label>
             <div className="input-group mb-3">
               <span className="input-group-text bg-info text-white">
                 <i className="fas fa-info-circle"></i>
@@ -187,6 +215,7 @@ function OwnerRegister() {
               <textarea
                 className="form-control bg-dark text-white border-info"
                 placeholder="Description"
+                id="description"
                 name="description"
                 value={registrationData.description}
                 onChange={fetchData}
@@ -194,6 +223,7 @@ function OwnerRegister() {
               ></textarea>
             </div>
 
+            <label htmlFor="file" className="form-label text-white">Upload File</label>
             <div className="input-group mb-4">
               <span className="input-group-text bg-info text-white">
                 <i className="fas fa-upload"></i>
@@ -201,10 +231,17 @@ function OwnerRegister() {
               <input
                 type="file"
                 name="file"
+                id="file"
                 className="form-control bg-dark text-white border-info"
                 onChange={fetchData}
               />
             </div>
+
+            {message && (
+              <div className="mb-3 text-center text-warning fw-semibold">
+                {message}
+              </div>
+            )}
 
             <div className="d-grid">
               <button className="btn btn-info rounded-pill fw-semibold">Register</button>

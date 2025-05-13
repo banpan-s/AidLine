@@ -1,11 +1,11 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
 
-const OwnerFeedbackSchema = new mongoose.Schema({
-  ownerEmail: { type: String, required: true },
-  feedback: { type: String, required: true },
-  createdAt: { type: Date, default: Date.now }
+const ownerFeedbackSchema = new mongoose.Schema({
+  feedback: {type: String,required: true},
+  ownerEmail: {type: String,required: true},
+  createdAt: {type: Date,default: Date.now,},
 });
 
-const OwnerFeedback = mongoose.model("OwnerFeedback", OwnerFeedbackSchema);
+const ownerFeedback = mongoose.model('ownerFeedback', ownerFeedbackSchema);
 
-export default OwnerFeedback;
+export default ownerFeedback;

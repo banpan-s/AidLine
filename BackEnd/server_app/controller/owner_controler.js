@@ -3,8 +3,27 @@ import ownerqueue from "../models/ownerqueue.model.js";
 import multer from "multer";
 import path from "path";
 import addnotice from "../models/addnote.model.js";
-import OwnerFeedback from "../models/owner.feedback.model.js";
+import ownerFeedback from "../models/owner.feedback.model.js";
 import bookqueue from "../models/user.bookqueue.model.js";
+
+// Owner feedback submission
+export const submitOwnerFeedback = async (req, res) => {
+  try {
+    const { feedback, ownerEmail } = req.body;
+    if (!feedback || typeof feedback !== "string" || feedback.trim() === "") {
+      return res.status(400).json({ message: "Feedback is required and must be a non-empty string" });
+    }
+    if (!ownerEmail || typeof ownerEmail !== "string" || ownerEmail.trim() === "") {
+      return res.status(400).json({ message: "Owner email is required and must be a non-empty string" });
+    }
+    const newFeedback = new ownerFeedback({ feedback: feedback.trim(), ownerEmail: ownerEmail.trim() });
+    await newFeedback.save();
+    res.status(200).json({ message: "Owner feedback submitted successfully" });
+  } catch (error) {
+    console.error("Error submitting owner feedback:", error);
+    res.status(500).json({ message: "Server error", error: error.message });
+  }
+};
 
 // Multer setup for file upload
 const storage = multer.diskStorage({
@@ -21,7 +40,14 @@ export const upload = multer({ storage: storage });
 export const addowner = async (req, res) => {
   try {
     const ownerData = req.body;
-    const { email, password, orgname, ownername, phone, address, orgtype, description, file } = ownerData;
+    const { email, password, orgname, ownername, phone, address, orgtype, description } = ownerData;
+    const file = req.file ? req.file.filename : null;
+
+    const existingOwner = await owner.findOne({ email: email });
+    if (existingOwner) {
+      return res.status(400).json({ message: "this email is already used" });
+    }
+
     const ownerDb = new owner({ email, password, orgname, ownername, phone, address, orgtype, description, file });
     await ownerDb.save();
     res.status(201).send("Owner registered successfully");
@@ -53,6 +79,7 @@ export const ownerLogin = async (req, res) => {
     console.log(err.message);
     res.status(500).json({ message: "Server error", error: err.message });
   }
+  
 };
 
 // CreateQueue function to handle queue creation
@@ -141,25 +168,6 @@ export const updateOwnerProfile = async (req, res) => {
   }
 };
 
-// Owner feedback submission
-export const submitOwnerFeedback = async (req, res) => {
-  try {
-    console.log("submitOwnerFeedback request body:", req.body);
-    const { feedback, ownerEmail } = req.body;
-    if (!feedback || typeof feedback !== "string" || feedback.trim() === "") {
-      return res.status(400).json({ message: "Feedback is required and must be a non-empty string" });
-    }
-    if (!ownerEmail || typeof ownerEmail !== "string" || ownerEmail.trim() === "") {
-      return res.status(400).json({ message: "Owner email is required and must be a non-empty string" });
-    }
-    const newFeedback = new OwnerFeedback({ feedback: feedback.trim(), ownerEmail: ownerEmail.trim() });
-    await newFeedback.save();
-    res.status(200).json({ message: "Owner feedback submitted successfully" });
-  } catch (error) {
-    console.error("Error submitting owner feedback:", error.stack || error);
-    res.status(500).json({ message: "Server error", error: error.message });
-  }
-};
 
 // Controller function to save addnotice text
 export const saveAddNoticeText = async (req, res) => {
@@ -199,6 +207,88 @@ export const getUsersInQueue = async (req, res) => {
     res.status(200).json(users);
   } catch (error) {
     console.error("Error fetching users in queue:", error);
+    res.status(500).json({ message: "Server error", error: error.message });
+  }
+};
+
+export const updateOwnerQueue = async (req, res) => {
+  try {
+    const { queueID, queueName, noOfToken, startTime, endTime, date } = req.body;
+    if (!queueID) {
+      return res.status(400).json({ message: "queueID is required" });
+    }
+
+    const updateData = {};
+    if (queueName !== undefined) updateData.queueName = queueName;
+    if (noOfToken !== undefined) updateData.noOfToken = noOfToken;
+    if (startTime !== undefined) updateData.startTime = startTime;
+    if (endTime !== undefined) updateData.endTime = endTime;
+    if (date !== undefined) updateData.date = date;
+
+    const updatedQueue = await ownerqueue.findByIdAndUpdate(queueID, updateData, { new: true });
+
+    if (!updatedQueue) {
+      return res.status(404).json({ message: "Queue not found" });
+    }
+
+    res.status(200).json({ message: "Queue updated successfully", data: updatedQueue });
+  } catch (error) {
+    console.error("Error updating owner queue:", error);
+    res.status(500).json({ message: "Server error", error: error.message });
+  }
+};
+
+// Update wait times for users in queue
+export const updateWaitTimes = async (req, res) => {
+  try {
+    const { queueID, updatedQueue } = req.body;
+    if (!queueID || !Array.isArray(updatedQueue)) {
+      return res.status(400).json({ message: "queueID and updatedQueue array are required" });
+    }
+
+    // Update each user's estimatedWaitTime in the queue
+    const updatePromises = updatedQueue.map(user =>
+      bookqueue.findByIdAndUpdate(user._id, { estimatedWaitTime: user.estimatedWaitTime })
+    );
+
+    await Promise.all(updatePromises);
+
+    res.status(200).json({ message: "Wait times updated successfully" });
+  } catch (error) {
+    console.error("Error updating wait times:", error);
+    res.status(500).json({ message: "Server error", error: error.message });
+  }
+};
+
+// Finish the first user in the queue
+export const finishFirstUser = async (req, res) => {
+  try {
+    const { queueID } = req.body;
+    if (!queueID) {
+      return res.status(400).json({ message: "queueID is required" });
+    }
+
+    // Find the first user in the queue (positionInQueue = 1)
+    const firstUser = await bookqueue.findOne({ queueID, positionInQueue: 1 });
+    if (!firstUser) {
+      return res.status(404).json({ message: "No user found at the front of the queue" });
+    }
+
+    // Remove or mark the first user as finished (here we remove)
+    await bookqueue.findByIdAndDelete(firstUser._id);
+
+    // Update positions and estimated wait times of remaining users
+    const remainingUsers = await bookqueue.find({ queueID }).sort({ positionInQueue: 1 });
+
+    for (let i = 0; i < remainingUsers.length; i++) {
+      remainingUsers[i].positionInQueue = i + 1;
+      // Optionally update estimatedWaitTime here if needed
+      await remainingUsers[i].save();
+    }
+
+    res.status(200).json({ message: "First user finished and queue updated" });
+  } catch (error) {
+    console.error("Error finishing first user:", error);
     res.status(500).json({ message: "Server error", error: error.message });
   }
 };

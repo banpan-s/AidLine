@@ -13,7 +13,7 @@ function ViewBooking() {
   const fetchBookings = async () => {
     try {
       const res = await axios.get("http://localhost:3000/user/getMyBookings", {
-        params: { userEmail }
+        params: { userEmail },
       });
       console.log("Fetched bookings:", res.data.bookings);
       setBookingData(res.data.bookings);
@@ -22,49 +22,79 @@ function ViewBooking() {
     }
   };
 
+  // Helper function to format check-in time as hour:minute AM/PM
+  const formatTime = (timeStr) => {
+    if (!timeStr) return "";
+    const [hour, minute] = timeStr.split(":");
+    const date = new Date();
+    date.setHours(parseInt(hour), parseInt(minute));
+    return date.toLocaleTimeString([], {
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: true,
+    });
+  };
+
   return (
-    <div className="container mt-5">
-      <h3 className="text-center mb-4">📊 Your Queue Bookings</h3>
+    <div
+      className="container py-5"
+      style={{
+        background: "linear-gradient(to right, #f8f9fa, #e3f2fd)",
+        borderRadius: "12px",
+        boxShadow: "0 4px 16px rgba(0,0,0,0.1)",
+      }}
+    >
+      <h2 className="text-center fw-bold mb-4 text-primary">
+        📊 Your Queue Bookings
+      </h2>
 
       {bookingData.length === 0 ? (
         <p className="text-center text-muted">No bookings found.</p>
       ) : (
         <>
-          {/* Chart */}
-          {/* <ResponsiveContainer width="100%" height={400}>
+          {/* Chart visualization (optional) */}
+          {/* <ResponsiveContainer width="100%" height={300}>
             <BarChart data={bookingData}>
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis dataKey="checkInDate" />
               <YAxis />
               <Tooltip />
-              <Bar dataKey="tokenNo" fill="#8884d8" />
+              <Bar dataKey="tokenNo" fill="#0d6efd" />
             </BarChart>
           </ResponsiveContainer> */}
 
-          {/* Table */}
-          <div className="table-responsive mt-5">
-            <table className="table table-striped">
-              <thead>
+          {/* Booking Table */}
+          <div className="table-responsive mt-4">
+            <table className="table table-hover table-bordered align-middle shadow-sm">
+              <thead className="table-primary">
                 <tr>
-                  <th>Token No</th>
-                  <th>Queue Name</th>
-                  {/* <th>Queue ID</th> */}
-                  <th>Eastimate Time</th>
-                  <th>Check-In Date</th>
-                  <th>Check-In Time</th>
-                  <th>Status</th>
+                  <th scope="col">📍 Queue Name</th>
+                  <th scope="col">🎫 Token No</th>
+                  <th scope="col">⏳ Estimated Time</th>
+                  <th scope="col">📅 Check-In Date</th>
+                  <th scope="col">🕒 Check-In Time</th>
+                  <th scope="col">📌 Status</th>
                 </tr>
               </thead>
               <tbody>
                 {bookingData.map((booking, index) => (
                   <tr key={index}>
-                    <td>{booking.tokenNo}</td>
                     <td>{booking.queueName}</td>
-                    {/* <td>{booking.queueID}</td> */}
+                    <td>{booking.tokenNo}</td>
                     <td>{booking.estimatedWaitTime}</td>
                     <td>{booking.checkInDate}</td>
-                    <td>{booking.checkInTime}</td>
-                    <td>{booking.status}</td>
+                    <td>{formatTime(booking.checkInTime)}</td>
+                    <td>
+                      <span
+                        className={`badge ${
+                          booking.status === "pending"
+                            ? "bg-warning text-dark"
+                            : "bg-success"
+                        }`}
+                      >
+                        {booking.status}
+                      </span>
+                    </td>
                   </tr>
                 ))}
               </tbody>
@@ -77,94 +107,3 @@ function ViewBooking() {
 }
 
 export default ViewBooking;
-
-
-
-
-
-
-// import axios from "axios";
-// import { useState, useEffect } from "react";
-// // import { BarChart, Bar, XAxis, YAxis, Tooltip, CartesianGrid, ResponsiveContainer } from "recharts";
-
-// function ViewBooking() {
-//   const [bookingData, setBookingData] = useState([]);
-//   const [searchTerm, setSearchTerm] = useState(""); // 🔸 NEW: for search
-//   const userEmail = localStorage.getItem("key");
-
-//   useEffect(() => {
-//     fetchBookings();
-//   }, []);
-
-//   const fetchBookings = async () => {
-//     try {
-//       const res = await axios.get("http://localhost:3000/user/getMyBookings", {
-//         params: { userEmail }
-//       });
-//       console.log("Fetched bookings:", res.data.bookings);
-//       setBookingData(res.data.bookings);
-//     } catch (error) {
-//       console.log(error);
-//     }
-//   };
-
-//   // 🔸 NEW: Filter bookings based on search term
-//   const filteredBookings = bookingData.filter((booking) =>
-//     booking.queueName.toLowerCase().includes(searchTerm.toLowerCase())
-//   );
-
-//   return (
-//     <div className="container mt-5">
-//       <h3 className="text-center mb-4">📊 Your Queue Bookings</h3>
-
-//       {/* 🔸 NEW: Search Input */}
-//       <div className="mb-4 text-center">
-//         <input
-//           type="text"
-//           className="form-control w-50 mx-auto"
-//           placeholder="Search by queue name..."
-//           value={searchTerm}
-//           onChange={(e) => setSearchTerm(e.target.value)}
-//         />
-//       </div>
-
-//       {filteredBookings.length === 0 ? (
-//         <p className="text-center text-muted">No bookings found.</p>
-//       ) : (
-//         <>
-//           {/* Table */}
-//           <div className="table-responsive mt-4">
-//             <table className="table table-striped">
-//               <thead>
-//                 <tr>
-//                   <th>Token No</th>
-//                   <th>Queue Name</th>
-//                   {/* <th>Queue ID</th> */}
-//                   <th>Estimate Time</th>
-//                   <th>Check-In Date</th>
-//                   <th>Check-In Time</th>
-//                   <th>Status</th>
-//                 </tr>
-//               </thead>
-//               <tbody>
-//                 {filteredBookings.map((booking, index) => (
-//                   <tr key={index}>
-//                     <td>{booking.tokenNo}</td>
-//                     <td>{booking.queueName}</td>
-//                     {/* <td>{booking.queueID}</td> */}
-//                     <td>{booking.estimatedWaitTime}</td>
-//                     <td>{booking.checkInDate}</td>
-//                     <td>{booking.checkInTime}</td>
-//                     <td>{booking.status}</td>
-//                   </tr>
-//                 ))}
-//               </tbody>
-//             </table>
-//           </div>
-//         </>
-//       )}
-//     </div>
-//   );
-// }
-
-// export default ViewBooking;

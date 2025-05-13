@@ -27,18 +27,18 @@ function App() {
           <main className="flex-grow-1">
             {/* Hero Section */}
             <section className="container text-center my-66" style={{}}>
-              <h1 className="display-4 fw-bold text-info">Welcome to Queue Navigator</h1>
+              <h1 className="display-4 fw-bold text-info">Welcome to AidLine</h1>
               <p className="lead mt-3 col text-primary">
-                Manage your queues in real-time, effortlessly and efficiently.
+                 effortlessly and efficiently.
               </p>
-              <button className="btn btn-outline-info rounded-pill px-4 mt-4">
+              {/* <button className="btn btn-outline-info rounded-pill px-4 mt-4">
                 Get Started
-              </button>
+              </button> */}
             </section>
 
             {/* Info Cards */}
             <section className="container my-5 ">
-              <div className="row g-4" style={{marginTop:"21%"}}>
+              <div className="row g-4" style={{marginTop:"28%"}}>
                 <div className="col-md-4">
                   <div className="bg-dark bg-opacity-75 p-4 rounded shadow">
                     <h5 className="text-info">Live Updates</h5>

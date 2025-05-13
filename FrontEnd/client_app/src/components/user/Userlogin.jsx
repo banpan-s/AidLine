@@ -10,6 +10,7 @@ function Userlogin() {
     userID: "",
     userPassword: "",
   });
+  const [loginMessage, setLoginMessage] = useState("");
 
   const fetchData = (e) => {
     setContactData({ ...contactData, [e.target.name]: e.target.value });
@@ -23,13 +24,16 @@ function Userlogin() {
       const serverResponse = await axios.post(URL, contactData);
       if (serverResponse.data.status === "Success") {
         localStorage.setItem("key", serverResponse.data.token);
-        navigate("/userhome");
-        alert("hello")
+        setLoginMessage("Login successful!");
+        setTimeout(() => {
+          navigate("/userhome");
+        }, 1500);
       } else {
-        alert(serverResponse.data.message);
+        setLoginMessage(serverResponse.data.message);
       }
     } catch (err) {
       console.log(err.message);
+      setLoginMessage("An error occurred. Please try again.");
     }
   };
 
@@ -111,6 +115,12 @@ function Userlogin() {
                 />
               </div>
             </div>
+
+            {loginMessage && (
+              <div className="mb-3 text-center text-warning fw-semibold">
+                {loginMessage}
+              </div>
+            )}
 
             <div className="d-grid">
               <button

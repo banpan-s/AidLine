@@ -22,7 +22,6 @@ import OwnerEditProfile from "./components/owner/OwnerEditProfile.jsx";
 import UpdateQueuePage from "./components/owner/UpdateQueuePage.jsx";
 
 import AddNotice from "./components/owner/AddNotice.jsx";
-import OwnerFeedback from "./components/owner/OwnerFeedback.jsx";
 
 
 //user path
@@ -33,6 +32,9 @@ import UserEditProfile from "./components/user/UserEditProfile";
 import ViewQueue from "./components/user/ViewQueue.jsx";
 import ViewBooking from "./components/user/ViewBooking.jsx";
 import AdminHome from "./components/admin/AdminHome.jsx";
+import OwnerFeedback from "./components/owner/OwnerFeedback.jsx"
+import AboutUs from "./pages/AboutUs.jsx"
+import TermsAndConditions from "./pages/TermsAndConditions.jsx"
 
 function RoutePath() {
   return (
@@ -40,6 +42,7 @@ function RoutePath() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<App />}></Route>
+          <Route path="/allContacts" element={<AllContacts />}></Route>
 
           <Route path="/adminlogin" element={<Adminlogin />}></Route>
           <Route path="/adminhome" element={<AdminHome />}></Route>
@@ -65,7 +68,9 @@ function RoutePath() {
           <Route path="/viewqueue" element={<ViewQueue/>}></Route>
           <Route path="/viewbooking" element={<ViewBooking/>}></Route>
 
-          <Route path="/allContacts" element={<AllContacts />}></Route>
+          <Route path="/aboutus" element={<AboutUs />}></Route>
+          <Route path="/terms" element={<TermsAndConditions />}></Route>
+
         </Routes>
       </BrowserRouter>
     </>

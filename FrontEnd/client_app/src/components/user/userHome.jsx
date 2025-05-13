@@ -43,9 +43,9 @@ function Userhome() {
               Welcome {user.name || "User"}
             </h4>
             <hr />
-            <p className="card-text mb-2"><strong>Phone:</strong> {user.phone}</p>
-            <p className="card-text mb-2"><strong>City:</strong> {user.city}</p>
-            <p className="card-text"><strong>Address:</strong> {user.address}</p>
+            <p className="card-text mb-2"><strong>📱 Phone:</strong> {user.phone}</p>
+            <p className="card-text mb-2"><strong>🏙️ City:</strong> {user.city}</p>
+            <p className="card-text"><strong>🏠 Address:</strong> {user.address}</p>
           </div>
         </div>
       </div>

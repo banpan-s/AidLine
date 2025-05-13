@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
+import Header from "./OwnerHeader";
 
 const CreateQueue = () => {
   const tokenEmail = localStorage.getItem("key");
@@ -12,7 +13,7 @@ const CreateQueue = () => {
     endTime: ""
   });
 
-  const queue = "http://localhost:3000/owner/createq";
+  const queue = "http://localhost:3000/owner/createQueue";
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -35,7 +36,9 @@ const CreateQueue = () => {
  // techy queue dashboard
 
   return (
+    <><Header/>
     <div
+    
       className="container-fluid d-flex justify-content-center align-items-center vh-100"
       style={{
         backgroundImage: `url(${backgroundImage})`,
@@ -123,6 +126,7 @@ const CreateQueue = () => {
         </form>
       </div>
     </div>
+    </>
   );
 };
 

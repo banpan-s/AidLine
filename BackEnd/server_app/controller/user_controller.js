@@ -1,4 +1,3 @@
-// import { request, response } from "express";
 import ownerqueue from "../models/ownerqueue.model.js";
 import bookqueue from "../models/user.bookqueue.model.js";
 import User from "../models/user.model.js";
@@ -8,21 +7,23 @@ export const bookQueue = async (req, res) => {
   const { queueID, userEmail } = req.query;
 
   try {
-    // 🔹 [NEW] Get queue info to fetch queueName
-    const queueInfo = await ownerqueue.findById(queueID); // 🔸 updated
+    const queueInfo = await ownerqueue.findById(queueID);
     if (!queueInfo) {
-      return res.status(404).json({ message: "Queue not found" }); // 🔸 updated
+      return res.status(404).json({ message: "Queue not found" });
     }
 
     const existingBookings = await bookqueue.find({ queueID });
+
+    if (existingBookings.length >= parseInt(queueInfo.noOfToken)) {
+      return res.status(400).json({ message: "Booking limit reached" });
+    }
+
     const tokenNumber = existingBookings.length + 1;
 
-    // Get current date and time
     const now = new Date();
     const checkInDate = now.toISOString().split("T")[0];
     const checkInTime = now.toTimeString().split(" ")[0];
 
-    // 🔹 [UPDATED] Include queueName while creating booking
     const newBooking = new bookqueue({
       queueID,
       userEmail,
@@ -32,18 +33,17 @@ export const bookQueue = async (req, res) => {
       status: "pending",
       checkInTime,
       checkInDate,
-      queueName: queueInfo.queueName, // 🔸 added this line
+      queueName: queueInfo.queueName,
     });
 
     await newBooking.save();
 
-    // 🔹 [Optional] Include queueName in response
     res.status(201).json({
       message: "Booking successful",
       tokenNumber,
       checkInTime,
       checkInDate,
-      queueName: queueInfo.queueName, // 🔸 added this line
+      queueName: queueInfo.queueName,
     });
   } catch (error) {
     console.error("Booking error:", error.message);
@@ -114,20 +114,25 @@ export const editProfile = async (request, response) => {
 async function addUser(request, response) {
   const userData = request.body;
   const { email, password, name, phone, address, gender, city } = userData;
-  const pic = request.file.filename;
-  console.log(pic);
-  console.log(request);
-  const userDb = new User({
-    email,
-    password,
-    name,
-    phone,
-    address,
-    gender,
-    city,
-    pic,
-  });
+  let pic = null;
+  if (request.file) {
+    pic = request.file.filename;
+  }
   try {
+    const existingUser = await User.findOne({ email: email });
+    if (existingUser) {
+      return response.status(400).json({ message: "this email is already used" });
+    }
+    const userDb = new User({
+      email,
+      password,
+      name,
+      phone,
+      address,
+      gender,
+      city,
+      pic,
+    });
     await userDb.save();
     response.send("User registered successfully!");
     console.log("User added");
