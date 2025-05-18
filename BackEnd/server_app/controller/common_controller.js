@@ -6,11 +6,11 @@ export const addContact = async (request, response) => {
   // {userName:"scott",userEmail:"scott", userQuery:"how are you"}
 
   //  object destructing
-  const { userName, userEmail, userQuery } = contactObject;   //
+  const { userName, userEmail, userQuery } = contactObject; //
   try {
     console.log(userName, contactObject);
     const contactDoc = new contact({ userName, userEmail, userQuery });
-    await contactDoc.save(); // it will store data into contact model
+    await contactDoc.save();
 
     //    response.send("Contact Added successful")
     response.status(201).json({ message: "Thanks for contacting us" });

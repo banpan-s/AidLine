@@ -5,7 +5,7 @@ import Header from "./OwnerHeader";
 
 const OwnerEditProfile = () => {
   const navigate = useNavigate();
-  const tokenEmail = localStorage.getItem("key");
+  const tokenEmail = localStorage.getItem("ownerEmail");
   const getProfileURL = "http://localhost:3000/owner/getProfile";
   const updateProfileURL = "http://localhost:3000/owner/editProfile";
 

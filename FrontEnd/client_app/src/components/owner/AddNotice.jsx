@@ -1,8 +1,18 @@
 import React, { useState } from "react";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const TextForm = () => {
   const [text, setText] = useState("");
   const [loading, setLoading] = useState(false);
+  const [notices, setNotices] = useState([]);
+  const [showNotices, setShowNotices] = useState(false);
+  const [loadingNotices, setLoadingNotices] = useState(false);
+  const [editingId, setEditingId] = useState(null);
+  const [editingText, setEditingText] = useState("");
+
+  const orgname = localStorage.getItem("ownerOrgName") || "";
+  console.log("AddNotice.jsx - orgname from localStorage:", orgname);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -16,7 +26,7 @@ const TextForm = () => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ text }),
+        body: JSON.stringify({ text, orgname }),
       });
 
       if (!response.ok) {
@@ -24,15 +34,87 @@ const TextForm = () => {
       }
 
       const result = await response.json();
-      alert(`Server responded: ${result.message || "Success"}`);
-      console.log("Server response:", result);
-
-      setText(""); // Clear input after success
+      toast.success(result.message || "Notice added successfully");
+      setText("");
+      fetchNotices();
     } catch (err) {
       console.error(err);
-      alert("Error sending text to server.");
+      toast.error("Error sending text to server.");
     } finally {
       setLoading(false);
+    }
+  };
+
+  const fetchNotices = async () => {
+    setLoadingNotices(true);
+    try {
+      const response = await fetch("http://localhost:3000/owner/getAllAddNotices");
+      if (!response.ok) {
+        throw new Error("Failed to fetch notices");
+      }
+      const data = await response.json();
+      setNotices(data.data || []);
+      setShowNotices(true);
+    } catch (err) {
+      console.error(err);
+      toast.error("Error fetching notices.");
+    } finally {
+      setLoadingNotices(false);
+    }
+  };
+
+  const startEditing = (id, currentText) => {
+    setEditingId(id);
+    setEditingText(currentText);
+  };
+
+  const cancelEditing = () => {
+    setEditingId(null);
+    setEditingText("");
+  };
+
+  const saveEdit = async () => {
+    if (!editingText.trim()) {
+      toast.error("Text cannot be empty");
+      return;
+    }
+    try {
+      const response = await fetch("http://localhost:3000/owner/updateAddNoticeText", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ id: editingId, text: editingText }),
+      });
+      if (!response.ok) {
+        throw new Error("Failed to update notice");
+      }
+      const result = await response.json();
+      toast.success(result.message || "Notice updated successfully");
+      setEditingId(null);
+      setEditingText("");
+      fetchNotices();
+    } catch (err) {
+      console.error(err);
+      toast.error("Error updating notice.");
+    }
+  };
+
+  const deleteNotice = async (id) => {
+    if (!window.confirm("Are you sure you want to delete this notice?")) return;
+    try {
+      const response = await fetch(`http://localhost:3000/owner/deleteAddNoticeText/${id}`, {
+        method: "DELETE",
+      });
+      if (!response.ok) {
+        throw new Error("Failed to delete notice");
+      }
+      const result = await response.json();
+      toast.success(result.message || "Notice deleted successfully");
+      fetchNotices();
+    } catch (err) {
+      console.error(err);
+      toast.error("Error deleting notice.");
     }
   };
 
@@ -52,6 +134,43 @@ const TextForm = () => {
           {loading ? "Sending..." : "Submit"}
         </button>
       </form>
+
+      <button onClick={fetchNotices} style={{ ...styles.button, marginTop: "20px" }} disabled={loadingNotices}>
+        {loadingNotices ? "Loading..." : "Show Notes"}
+      </button>
+
+      {showNotices && (
+        <div style={styles.noticeList}>
+          {notices.length === 0 ? (
+            <p>No notices found.</p>
+          ) : (
+            notices.map((notice) => (
+              <div key={notice._id} style={styles.noticeItem}>
+                <p><strong>Org Name:</strong> {notice.orgname || "N/A"}</p>
+                {editingId === notice._id ? (
+                  <>
+                    <textarea
+                      value={editingText}
+                      onChange={(e) => setEditingText(e.target.value)}
+                      style={styles.textarea}
+                    />
+                    <button onClick={saveEdit} style={styles.smallButton}>Save</button>
+                    <button onClick={cancelEditing} style={styles.smallButton}>Cancel</button>
+                  </>
+                ) : (
+                  <>
+                    <p><strong>Text:</strong> {notice.text}</p>
+                    <button onClick={() => startEditing(notice._id, notice.text)} style={styles.smallButton}>Edit</button>
+                    <button onClick={() => deleteNotice(notice._id)} style={styles.smallButton}>Delete</button>
+                  </>
+                )}
+              </div>
+            ))
+          )}
+        </div>
+      )}
+
+      <ToastContainer />
     </div>
   );
 };
@@ -59,15 +178,18 @@ const TextForm = () => {
 const styles = {
   container: {
     backgroundColor: "#121212",
-    height: "100vh",
+    minHeight: "100vh",
+    padding: "20px",
     display: "flex",
-    justifyContent: "center",
+    flexDirection: "column",
     alignItems: "center",
   },
   form: {
     backgroundColor: "#1e1e1e",
     padding: "20px",
     borderRadius: "10px",
+    display: "flex",
+    alignItems: "center",
   },
   input: {
     padding: "10px",
@@ -83,6 +205,35 @@ const styles = {
     border: "none",
     borderRadius: "5px",
     cursor: "pointer",
+  },
+  noticeList: {
+    marginTop: "20px",
+    width: "100%",
+    maxWidth: "600px",
+    backgroundColor: "#1e1e1e",
+    borderRadius: "10px",
+    padding: "10px",
+    color: "white",
+  },
+  noticeItem: {
+    borderBottom: "1px solid #444",
+    padding: "10px 0",
+  },
+  smallButton: {
+    marginRight: "10px",
+    padding: "5px 10px",
+    backgroundColor: "#555",
+    color: "white",
+    border: "none",
+    borderRadius: "5px",
+    cursor: "pointer",
+  },
+  textarea: {
+    width: "100%",
+    height: "60px",
+    borderRadius: "5px",
+    padding: "5px",
+    marginBottom: "10px",
   },
 };
 

@@ -22,7 +22,7 @@ function UserEditProfile() {
     } else {
       fetchUserDetails();
     }
-  }, []);
+  }, [tokenEmail, navigate]);
 
   const fetchUserDetails = async () => {
     try {
@@ -60,58 +60,58 @@ function UserEditProfile() {
   return (
     <>
       <Header />
-      <div style={{marginTop:"90px"}}>
-      <div className="container mt-5">
-        <div className="card shadow-sm p-4 mx-auto" style={{ maxWidth: "500px" }}>
-          <div className="text-center mb-3">
-            <img
-              src={`http://localhost:3000/uploads/${user?.pic || "default.jpg"}`}
-              alt="Profile"
-              className="rounded-circle"
-              style={{ width: "100px", height: "100px", objectFit: "cover" }}
-            />
-            <h5 className="mt-3">Edit Profile</h5>
+      <div style={{ marginTop: "90px" }}>
+        <div className="container mt-5">
+          <div className="card shadow-sm p-4 mx-auto" style={{ maxWidth: "500px" }}>
+            <div className="text-center mb-3">
+              <img
+                src={`http://localhost:3000/uploads/${user?.pic || "default.jpg"}`}
+                alt="Profile"
+                className="rounded-circle"
+                style={{ width: "100px", height: "100px", objectFit: "cover" }}
+              />
+              <h5 className="mt-3">Edit Profile</h5>
+            </div>
+            <form onSubmit={handleSubmit}>
+              <div className="mb-3">
+                <label className="form-label">Phone</label>
+                <input
+                  type="text"
+                  name="phone"
+                  className="form-control"
+                  value={user.phone}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+              <div className="mb-3">
+                <label className="form-label">City</label>
+                <input
+                  type="text"
+                  name="city"
+                  className="form-control"
+                  value={user.city}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+              <div className="mb-3">
+                <label className="form-label">Address</label>
+                <textarea
+                  name="address"
+                  className="form-control"
+                  rows="3"
+                  value={user.address}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+              <button type="submit" className="btn btn-primary w-100">
+                Update Profile
+              </button>
+            </form>
           </div>
-          <form onSubmit={handleSubmit}>
-            <div className="mb-3">
-              <label className="form-label">Phone</label>
-              <input
-                type="text"
-                name="phone"
-                className="form-control"
-                value={user.phone}
-                onChange={handleChange}
-                required
-              />
-            </div>
-            <div className="mb-3">
-              <label className="form-label">City</label>
-              <input
-                type="text"
-                name="city"
-                className="form-control"
-                value={user.city}
-                onChange={handleChange}
-                required
-              />
-            </div>
-            <div className="mb-3">
-              <label className="form-label">Address</label>
-              <textarea
-                name="address"
-                className="form-control"
-                rows="3"
-                value={user.address}
-                onChange={handleChange}
-                required
-              />
-            </div>
-            <button type="submit" className="btn btn-primary w-100">
-              Update Profile
-            </button>
-          </form>
         </div>
-      </div>
       </div>
     </>
   );

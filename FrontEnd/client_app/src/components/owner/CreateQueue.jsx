@@ -3,7 +3,7 @@ import axios from "axios";
 import Header from "./OwnerHeader";
 
 const CreateQueue = () => {
-  const tokenEmail = localStorage.getItem("key");
+  const tokenEmail = localStorage.getItem("ownerEmail");
 
   const [formData, setFormData] = useState({
     email: tokenEmail,

@@ -197,11 +197,11 @@ import Feedback from "../models/user.feedback.model.js";
 // User feedback submission
 export const submitFeedback = async (req, res) => {
   try {
-    const { feedback, userEmail } = req.body;
+    const { feedback, userEmail, userName } = req.body;
     if (!feedback) {
       return res.status(400).json({ message: "Feedback is required" });
     }
-    const newFeedback = new Feedback({ feedback, userEmail });
+    const newFeedback = new Feedback({ feedback, userEmail, userName });
     await newFeedback.save();
     res.status(200).json({ message: "Feedback submitted successfully" });
   } catch (error) {

@@ -8,10 +8,6 @@ function Header() {
     navigate("/ownerlogin");
   };
 
-  const goToEditProfile = (e) => {
-    e.preventDefault();
-    navigate("/ownereditprofile");
-  };
 
   return (
     <>
@@ -58,7 +54,7 @@ function Header() {
               </a>
             </li>
             <li className="nav-item">
-              <a className="nav-link text-white" href="#" onClick={goToEditProfile}>
+              <a className="nav-link text-white" href="/ownereditprofile" >
                 <i className="fas fa-user-edit"></i> Edit Profile
               </a>
             </li>

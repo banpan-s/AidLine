@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import Header from './UserHeader';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function Userhome() {
   const navigate = useNavigate();
+  const location = useLocation();
   const tokenEmail = localStorage.getItem("key");
   const URL = "http://localhost:3000/user/userProfile";
   const [user, setUser] = useState({});
@@ -14,8 +17,11 @@ function Userhome() {
       navigate("/userlogin");
     } else {
       fetchUserDetails();
+      if (location.state && location.state.loginSuccess) {
+        toast.success("Login successful!");
+      }
     }
-  }, []);
+  }, [tokenEmail, location.state, navigate]);
 
   const fetchUserDetails = async () => {
     try {
@@ -49,6 +55,7 @@ function Userhome() {
           </div>
         </div>
       </div>
+      <ToastContainer />
     </>
   );
 }

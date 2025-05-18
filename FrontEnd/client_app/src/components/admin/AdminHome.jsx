@@ -3,7 +3,6 @@ import FeedbackList from './FeedbackList';
 import ContactList from './ContactList';
 import UserList from './UserList';
 import OwnerList from './OwnerList';
-import BookingList from './BookingList';
 
 function AdminHome() {
   const [activeTab, setActiveTab] = useState('feedback');
@@ -18,8 +17,6 @@ function AdminHome() {
         return <UserList />;
       case 'owners':
         return <OwnerList />;
-      case 'bookings':
-        return <BookingList />;
       default:
         return null;
     }
@@ -53,11 +50,7 @@ function AdminHome() {
                   Owners
                 </button>
               </li>
-              <li className="nav-item mt-2">
-                <button className={`nav-link btn w-100 text-start ${activeTab === 'bookings' ? 'active btn-primary' : 'btn-outline-primary'}`} onClick={() => setActiveTab('bookings')}>
-                  Bookings
-                </button>
-              </li>
+              
               
               
             </ul>

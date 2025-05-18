@@ -39,7 +39,7 @@ return(
     <div className="offcanvas-body">
         <ul className="navbar-nav">
             <li className="nav-item">
-                <a className="nav-link text-white" href="/userhome"><i className="bi bi-house-door"></i> Home</a>
+                <a className="nav-link text-white" href="/"><i className="bi bi-house-door"></i> Home</a>
             </li>
             <li className="nav-item">
                 <a className="nav-link text-white" href="/usereditprofile"><i className="fas fa-user-edit"></i> Edit Profile</a>

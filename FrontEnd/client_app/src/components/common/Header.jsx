@@ -1,14 +1,14 @@
 import { Link } from 'react-router-dom';
 import '../../css/Custom_style.css';
-const AidlineLogo = '/images/l.png';
+const AidlineLogo = '/images/1a.png';
 
 const Header = () => {
   return (
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark bg-opacity-75 shadow-sm px-3 rounded-bottom">
       <div className="container-fluid">
         <Link className="navbar-brand d-flex align-items-center" to="/">
-          <img src={AidlineLogo} alt="Logo" width="40" height="40" className="me-2" />
-          <span className="fw-bold text-info fs-5">Queue Manage</span>
+          <img src={AidlineLogo} alt="Logo" width="60" height="auto" className="me-2" />
+          <span className="fw-bold text-info fs-5">Aid Line</span>
         </Link>
         
         <button

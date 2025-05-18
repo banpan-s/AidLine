@@ -15,7 +15,7 @@ function ContactDetails({ contactArray }) {
                 <tbody>
                     {contactArray && contactArray.length > 0 ? (
                         contactArray.map((item) => (
-                            <tr key={item.id}>
+                            <tr key={item._id}>
                                 <td>{item.userName}</td>
                                 <td>{item.userEmail}</td>
                                 <td>{item.userQuery}</td>

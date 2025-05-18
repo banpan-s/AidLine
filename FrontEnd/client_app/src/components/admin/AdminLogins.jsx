@@ -1,10 +1,13 @@
 import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 
 const AdminLogin = () => {
   const navigate = useNavigate();
   const [admindata, setadmindata] = useState({ adminemail: "", adminpass: "" });
+  const [successMessage, setSuccessMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
   const URL = "http://localhost:3000/admin/adminLogin";
 
   const fetchdata = (e) => {
@@ -17,15 +20,37 @@ const AdminLogin = () => {
       const serverResponse = await axios.post(URL, admindata);
       if (serverResponse.data.status === "Success") {
         localStorage.setItem("key", serverResponse.data.token);
-        alert(serverResponse.data.message);
+        setSuccessMessage(serverResponse.data.message);
+        setErrorMessage("");
+        await Swal.fire({
+          icon: "success",
+          title: "Success",
+          text: serverResponse.data.message,
+          timer: 2000,
+          showConfirmButton: false,
+        });
         navigate("/adminhome");
       } else {
-        alert(serverResponse.data.message);
+        setErrorMessage(serverResponse.data.message);
+        setSuccessMessage("");
+        await Swal.fire({
+          icon: "error",
+          title: "Error",
+          text: serverResponse.data.message,
+        });
       }
     } catch (err) {
       console.log(err.message);
+      setErrorMessage("An error occurred during login.");
+      setSuccessMessage("");
+      await Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "An error occurred during login.",
+      });
     }
   };
+
 
   const mainStyle = {
     display: "flex",
@@ -67,6 +92,8 @@ const AdminLogin = () => {
       <div style={containerStyle}>
         <div style={formStyle}>
           <h3 className="mb-4 text-center">Admin Login</h3>
+          {successMessage && <div className="alert alert-success">{successMessage}</div>}
+          {errorMessage && <div className="alert alert-danger">{errorMessage}</div>}
           <form onSubmit={submitdata}>
             <div className="input-group mb-3">
               <span className="input-group-text">

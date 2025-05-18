@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import Footer from "./Footer";
+import Header from "./Header";
 
 const NOTICES_URL = "http://localhost:3000/owner/getAllAddNotices";
 
@@ -64,12 +66,14 @@ const Notices = () => {
         month: "short",
         day: "numeric",
       });
-    } catch (err) {
+    } catch {
       return "Invalid Date";
     }
   };
 
   return (
+    <>
+    <Header/>
     <div className="container" style={containerStyle}>
       <h2 className="text-primary mb-4">Exclusive Owner Notices</h2>
       {notices.length === 0 ? (
@@ -85,6 +89,7 @@ const Notices = () => {
                 <h6 className="card-title">
                   Notice Date: {notice.createdAt ? formatDate(notice.createdAt) : "24  Hour"}
                 </h6>
+                <p className="card-text"><strong>Organization:</strong> {notice.orgname || "N/A"}</p>
                 <p className="card-text">{notice.text}</p>
               </div>
             ))}
@@ -95,6 +100,10 @@ const Notices = () => {
         </div>
       )}
     </div>
+        <Footer/>
+
+    </>
+
   );
 };
 

@@ -58,7 +58,6 @@ export const addowner = async (req, res) => {
   }
 };
 
-// Owner login function
 export const ownerLogin = async (req, res) => {
   const userdata = req.body;
   const { userID, userPassword } = userdata;
@@ -67,19 +66,17 @@ export const ownerLogin = async (req, res) => {
     const userobject = await owner.findOne({ email: userID });
     if (userobject != null) {
       if (userobject.password === userPassword) {
-        console.log("password is : ", userobject.password);
-        return res.json({ message: "Hello " + userobject.email, status: "Success", token: userobject.email });
+        return res.status(200).json({ message: "Login successful", status: "Success", token: userobject.email });
       } else {
-        return res.json({ message: "Invalid Password" });
+        return res.status(401).json({ message: "Invalid Password", status: "Failed" });
       }
     } else {
-      return res.json({ message: "Email does not exist" });
+      return res.status(404).json({ message: "Email does not exist", status: "Failed" });
     }
   } catch (err) {
-    console.log(err.message);
+    console.error(err.message);
     res.status(500).json({ message: "Server error", error: err.message });
   }
-  
 };
 
 // CreateQueue function to handle queue creation
@@ -181,6 +178,45 @@ export const saveAddNoticeText = async (req, res) => {
     res.status(201).json({ message: "Notice text saved successfully", data: newNotice });
   } catch (error) {
     console.error("Error saving notice text:", error);
+    res.status(500).json({ message: "Server error", error: error.message });
+  }
+};
+
+// Controller function to update addnotice text
+export const updateAddNoticeText = async (req, res) => {
+  try {
+    const { id, text } = req.body;
+    if (!id) {
+      return res.status(400).json({ message: "Notice ID is required" });
+    }
+    if (!text) {
+      return res.status(400).json({ message: "Text is required" });
+    }
+    const updatedNotice = await addnotice.findByIdAndUpdate(id, { text }, { new: true });
+    if (!updatedNotice) {
+      return res.status(404).json({ message: "Notice not found" });
+    }
+    res.status(200).json({ message: "Notice updated successfully", data: updatedNotice });
+  } catch (error) {
+    console.error("Error updating notice text:", error);
+    res.status(500).json({ message: "Server error", error: error.message });
+  }
+};
+
+// Controller function to delete addnotice text
+export const deleteAddNoticeText = async (req, res) => {
+  try {
+    const { id } = req.params;
+    if (!id) {
+      return res.status(400).json({ message: "Notice ID is required" });
+    }
+    const deletedNotice = await addnotice.findByIdAndDelete(id);
+    if (!deletedNotice) {
+      return res.status(404).json({ message: "Notice not found" });
+    }
+    res.status(200).json({ message: "Notice deleted successfully" });
+  } catch (error) {
+    console.error("Error deleting notice text:", error);
     res.status(500).json({ message: "Server error", error: error.message });
   }
 };

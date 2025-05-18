@@ -1,7 +1,8 @@
 import { useState } from "react";
-import '../../css/Custom_style.css';
+import "../../css/Custom_style.css";
 import axios from "axios";
-import Header from './Header';
+import Header from "./Header";
+import Footer from "./Footer";
 
 function Contact() {
   const URL = "http://localhost:3000/allContact";
@@ -10,6 +11,7 @@ function Contact() {
     userEmail: "",
     userQuery: "",
   });
+  const [successMessage, setSuccessMessage] = useState("");
 
   const fetchData = (e) => {
     setContactData({ ...contactData, [e.target.name]: e.target.value });
@@ -19,77 +21,86 @@ function Contact() {
     e.preventDefault();
     try {
       const serverResponse = await axios.post(URL, contactData);
-      console.log(serverResponse);
+      setSuccessMessage(serverResponse.data.message); // Show success message
+      setContactData({ userName: "", userEmail: "", userQuery: "" }); // Clear form
     } catch (err) {
-      console.log("err.message");
+      console.log(err.message);
     }
   };
 
   return (
     <>
       <Header />
+      
 
-      {/* Section with gradient background color */}
+      {/* Light and Professional Background */}
       <div
-        className="min-vh-100 d-flex align-items-center justify-content-center"
+        className="min-vh-100 d-flex justify-content-center align-items-center"
         style={{
-          background: "linear-gradient(135deg, #0f2027, #203a43, #2c5364)",
+          background: "linear-gradient(to right, #e0eafc, #cfdef3)",
+          padding: "40px 20px",
         }}
       >
-        <div className="card p-4 p-md-5 bg-dark bg-opacity-75 text-white shadow-lg border-0 rounded-4" style={{ maxWidth: "600px", width: "100%" }}>
-          <h2 className="text-center mb-4 text-info">Contact Us</h2>
+        {/* Contact Card */}
+        <div
+          className="bg-white p-4 p-md-5 shadow-lg rounded-4 border border-0"
+          style={{ maxWidth: "600px", width: "100%" }}
+        >
+          <h2 className="text-center mb-4 text-primary fw-bold">Contact Us</h2>
+          {successMessage && <div className="alert alert-success">{successMessage}</div>}
 
           <form onSubmit={submitData}>
             <div className="mb-3">
-              <label htmlFor="userName" className="form-label">Name</label>
+              <label htmlFor="userName" className="form-label fw-semibold">Name</label>
               <input
                 type="text"
-                className="form-control bg-transparent text-white border-info"
+                className="form-control"
                 id="userName"
                 name="userName"
                 value={contactData.userName}
                 onChange={fetchData}
-                placeholder="Enter your name"
+                placeholder="Your name"
                 required
               />
             </div>
 
             <div className="mb-3">
-              <label htmlFor="userEmail" className="form-label">Email</label>
+              <label htmlFor="userEmail" className="form-label fw-semibold">Email</label>
               <input
                 type="email"
-                className="form-control bg-transparent text-white border-info"
+                className="form-control"
                 id="userEmail"
                 name="userEmail"
                 value={contactData.userEmail}
                 onChange={fetchData}
-                placeholder="Enter your email"
+                placeholder="Your email"
                 required
               />
             </div>
 
             <div className="mb-4">
-              <label htmlFor="userQuery" className="form-label">Your Message</label>
+              <label htmlFor="userQuery" className="form-label fw-semibold">Message</label>
               <textarea
-                className="form-control bg-transparent text-white border-info"
+                className="form-control"
                 id="userQuery"
                 name="userQuery"
                 value={contactData.userQuery}
                 onChange={fetchData}
-                placeholder="Write your feedback..."
+                placeholder="How can we help you?"
                 rows="5"
                 required
               ></textarea>
             </div>
 
             <div className="d-grid">
-              <button type="submit" className="btn btn-outline-info rounded-pill btn-lg">
-                Submit
+              <button type="submit" className="btn btn-primary btn-lg rounded-pill fw-semibold">
+                Submit Message
               </button>
             </div>
           </form>
         </div>
       </div>
+      <Footer/>
     </>
   );
 }

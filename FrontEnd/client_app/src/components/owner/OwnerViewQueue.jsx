@@ -18,9 +18,15 @@ const OwnerViewQueue = () => {
 
   useEffect(() => {
     const fetchQueues = async () => {
+      const email = localStorage.getItem("ownerEmail");
+      if (!email) {
+        console.error("Owner email not found in localStorage");
+        setLoading(false);
+        return;
+      }
       try {
         const response = await axios.get("http://localhost:3000/owner/getOwnerQueue", {
-          params: { email: localStorage.getItem("key") },
+          params: { email },
         });
         setQueues(response.data);
         setFilteredQueues(response.data);
@@ -236,5 +242,3 @@ const OwnerViewQueue = () => {
   );
 };
 export default OwnerViewQueue;
-
-

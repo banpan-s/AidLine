@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 
-const UserFeedback = () => {
+const UserFeedback = ({ userName, userEmail }) => {
   const [feedback, setFeedback] = useState("");
   const [message, setMessage] = useState("");
 
@@ -15,7 +15,7 @@ const UserFeedback = () => {
     }
 
     try {
-      const response = await axios.post("http://localhost:3000/user/submitFeedback", { feedback });
+      const response = await axios.post("http://localhost:3000/user/submitFeedback", { feedback, userName, userEmail });
       if (response.status === 200) {
         setMessage("🎉 Thank you! Your feedback means a lot.");
         setFeedback("");
@@ -81,11 +81,6 @@ const UserFeedback = () => {
     fontSize: "1rem",
     cursor: "pointer",
     transition: "all 0.3s ease",
-  };
-
-  const buttonHoverStyle = {
-    ...buttonStyle,
-    backgroundColor: "#ff4757",
   };
 
   const messageStyle = {

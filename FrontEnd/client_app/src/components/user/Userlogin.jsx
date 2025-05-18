@@ -49,88 +49,76 @@ function Userlogin() {
     <>
       <Header />
 
-      {/* Fullscreen Video Background */}
-      <div className="position-fixed top-0 start-0 w-100 h-100 z-n1">
-        <video
-          autoPlay
-          loop
-          muted
-          playsInline
-          className="w-100 h-100"
-          style={{ objectFit: "cover" }}
-        >
-          <source src="/videos/v.mp4" type="video/mp4" />
-        </video>
-      </div>
+      <div style={{ backgroundColor: "#343a40", minHeight: "100vh", paddingTop: "40px", paddingBottom: "40px" }}>
+        {/* Centered Login Form */}
+        <div className="d-flex justify-content-center align-items-center min-vh-100">
+          <div
+            className="card text-white bg-dark bg-opacity-75 shadow-lg p-4 rounded-4"
+            style={{ width: "380px", zIndex: 2 }}
+          >
+            <h3 className="text-center mb-4 text-info fw-bold">User Login</h3>
 
-      {/* Centered Login Form */}
-      <div className="d-flex justify-content-center align-items-center min-vh-100">
-        <div
-          className="card text-white bg-dark bg-opacity-75 shadow-lg p-4 rounded-4"
-          style={{ width: "380px", zIndex: 2 }}
-        >
-          <h3 className="text-center mb-4 text-info fw-bold">User Login</h3>
-
-          <form onSubmit={submitData}>
-            {/* User ID */}
-            <div className="mb-3">
-              <label htmlFor="userID" className="form-label text-white">
-                User ID
-              </label>
-              <div className="input-group">
-                <span className="input-group-text bg-info text-white">
-                  <i className="fas fa-user" />
-                </span>
-                <input
-                  type="text"
-                  id="userID"
-                  name="userID"
-                  className="form-control bg-dark text-white border-info"
-                  placeholder="Enter User ID"
-                  value={contactData.userID}
-                  onChange={fetchData}
-                  required
-                />
+            <form onSubmit={submitData}>
+              {/* User ID */}
+              <div className="mb-3">
+                <label htmlFor="userID" className="form-label text-white">
+                  User ID
+                </label>
+                <div className="input-group">
+                  <span className="input-group-text bg-info text-white">
+                    <i className="fas fa-user" />
+                  </span>
+                  <input
+                    type="text"
+                    id="userID"
+                    name="userID"
+                    className="form-control bg-dark text-white border-info"
+                    placeholder="Enter User ID"
+                    value={contactData.userID}
+                    onChange={fetchData}
+                    required
+                  />
+                </div>
               </div>
-            </div>
 
-            {/* Password */}
-            <div className="mb-4">
-              <label htmlFor="userPassword" className="form-label text-white">
-                Password
-              </label>
-              <div className="input-group">
-                <span className="input-group-text bg-info text-white">
-                  <i className="fas fa-lock" />
-                </span>
-                <input
-                  type="password"
-                  id="userPassword"
-                  name="userPassword"
-                  className="form-control bg-dark text-white border-info"
-                  placeholder="Enter Password"
-                  value={contactData.userPassword}
-                  onChange={fetchData}
-                  required
-                />
+              {/* Password */}
+              <div className="mb-4">
+                <label htmlFor="userPassword" className="form-label text-white">
+                  Password
+                </label>
+                <div className="input-group">
+                  <span className="input-group-text bg-info text-white">
+                    <i className="fas fa-lock" />
+                  </span>
+                  <input
+                    type="password"
+                    id="userPassword"
+                    name="userPassword"
+                    className="form-control bg-dark text-white border-info"
+                    placeholder="Enter Password"
+                    value={contactData.userPassword}
+                    onChange={fetchData}
+                    required
+                  />
+                </div>
               </div>
-            </div>
 
-            {loginMessage && (
-              <div className="mb-3 text-center text-warning fw-semibold">
-                {loginMessage}
+              {loginMessage && (
+                <div className="mb-3 text-center text-warning fw-semibold">
+                  {loginMessage}
+                </div>
+              )}
+
+              <div className="d-grid">
+                <button
+                  type="submit"
+                  className="btn btn-info fw-semibold rounded-pill"
+                >
+                  Login
+                </button>
               </div>
-            )}
-
-            <div className="d-grid">
-              <button
-                type="submit"
-                className="btn btn-info fw-semibold rounded-pill"
-              >
-                Login
-              </button>
-            </div>
-          </form>
+            </form>
+          </div>
         </div>
       </div>
     </>
