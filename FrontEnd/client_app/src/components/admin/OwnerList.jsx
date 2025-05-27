@@ -55,6 +55,30 @@ function OwnerList() {
                 <p className="mb-0 text-muted">
                   <strong>Phone:</strong> {owner.phone || 'No Phone'}
                 </p>
+                <button
+                  className="btn btn-danger btn-sm mt-3"
+                  onClick={async () => {
+                    if (window.confirm(`Are you sure you want to delete owner ${owner.name || owner.email}?`)) {
+                      try {
+                        const response = await fetch(`${API_BASE_URL}/admin/owner/${owner._id}`, {
+                          method: 'DELETE',
+                        });
+                        if (response.ok) {
+                          alert('Owner deleted successfully');
+                          // Remove deleted owner from state
+                          setOwners((prevOwners) => prevOwners.filter((o) => o._id !== owner._id));
+                        } else {
+                          const errorData = await response.json();
+                          alert('Failed to delete owner: ' + (errorData.message || 'Unknown error'));
+                        }
+                      } catch (error) {
+                        alert('Error deleting owner: ' + error.message);
+                      }
+                    }
+                  }}
+                >
+                  Delete Owner
+                </button>
               </div>
             </div>
           ))}

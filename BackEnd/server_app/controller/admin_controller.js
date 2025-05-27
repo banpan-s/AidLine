@@ -5,6 +5,8 @@ import OwnerFeedback from "../models/owner.feedback.model.js";
 import User from "../models/user.model.js";
 import Owner from "../models/owner.model.js";
 import UserBooking from "../models/user.bookqueue.model.js";
+import { sendEmail } from "../utilities/emailService.js";
+
 
 //--------------contact listin code----------------
 export const allContacts = async (request, response) => {
@@ -16,6 +18,32 @@ export const allContacts = async (request, response) => {
     console.log(contactDocs);
   } catch (err) {
     console.log(err.message);
+  }
+};
+
+export const replyContact = async (req, res) => {
+  try {
+    const { contactId, replyMessage } = req.body;
+    if (!contactId || !replyMessage) {
+      return res.status(400).json({ message: "contactId and replyMessage are required" });
+    }
+
+    const contactDoc = await contact.findById(contactId);
+    if (!contactDoc) {
+      return res.status(404).json({ message: "Contact query not found" });
+    }
+
+    const toEmail = contactDoc.userEmail;
+    const subject = "Reply to your contact query";
+    const text = replyMessage;
+    const html = `<p>${replyMessage}</p>`;
+
+    await sendEmail(toEmail, subject, text, html);
+
+    res.json({ message: "Reply sent successfully" });
+  } catch (error) {
+    console.error("Error sending reply email:", error);
+    res.status(500).json({ message: "Server error", error: error.stack || error.message || error.toString() });
   }
 };
 
@@ -91,6 +119,36 @@ export const allBookings = async (req, res) => {
     res.json({ bookings: bookings });
   } catch (error) {
     console.error("Error fetching bookings:", error);
+    res.status(500).json({ message: "Server error", error: error.message });
+  }
+};
+
+// Delete a user by ID
+export const deleteUser = async (req, res) => {
+  try {
+    const userId = req.params.id;
+    const deletedUser = await User.findByIdAndDelete(userId);
+    if (!deletedUser) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    res.json({ message: "User deleted successfully", user: deletedUser });
+  } catch (error) {
+    console.error("Error deleting user:", error);
+    res.status(500).json({ message: "Server error", error: error.message });
+  }
+};
+
+// Delete an owner by ID
+export const deleteOwner = async (req, res) => {
+  try {
+    const ownerId = req.params.id;
+    const deletedOwner = await Owner.findByIdAndDelete(ownerId);
+    if (!deletedOwner) {
+      return res.status(404).json({ message: "Owner not found" });
+    }
+    res.json({ message: "Owner deleted successfully", owner: deletedOwner });
+  } catch (error) {
+    console.error("Error deleting owner:", error);
     res.status(500).json({ message: "Server error", error: error.message });
   }
 };

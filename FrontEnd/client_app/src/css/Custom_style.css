@@ -114,4 +114,98 @@ footer {
 
 
 
+/* Logo bounce animation (already included) */
+@keyframes logo-bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(13px); }
+}
+
+/* New: Smooth color pulse animation for nav links */
+@keyframes pulse-color {
+  0%, 100% { color: #ffffff; }
+  50% { color: #52b788; }
+}
+
+/* New: Slide-in dropdown items from left */
+@keyframes slide-in-left {
+  from {
+    opacity: 0;
+    transform: translateX(-15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Logo animation */
+.logo-responsive {
+  width: 60px;
+  height: auto;
+  animation: logo-bounce 4s ease-in-out infinite;
+  transition: width 0.3s ease;
+}
+@media (max-width: 576px) {
+  .logo-responsive { width: 45px; }
+}
+@media (min-width: 1200px) {
+  .logo-responsive { width: 70px; }
+}
+
+/* Header title glow with subtle flicker */
+.header-glow {
+  color: #caf0f8;
+  text-shadow: 0 0 6px #52b788, 0 0 12px #38a169;
+  animation: flicker-glow 3s infinite;
+  transition: text-shadow 0.3s ease-in-out;
+}
+@keyframes flicker-glow {
+  0%, 100% { text-shadow: 0 0 6px #52b788, 0 0 12px #38a169; }
+  50% { text-shadow: 0 0 10px #38a169, 0 0 20px #2d6a4f; }
+}
+.header-glow:hover {
+  text-shadow: 0 0 15px #38a169, 0 0 30px #2d6a4f, 0 0 45px #2d6a4f;
+}
+
+/* Nav link with pulse color animation on hover */
+.nav-link-hover {
+  transition: color 0.3s ease, background-color 0.3s ease;
+  border-radius: 8px;
+  padding: 6px 14px;
+}
+.nav-link-hover:hover {
+  color: #52b788 !important;
+  background-color: rgba(82, 183, 136, 0.15);
+  animation: pulse-color 1.5s ease-in-out infinite;
+}
+
+/* Dropdown menu with slide-in animation */
+.dropdown-menu {
+  animation: slide-in-left 0.3s ease forwards;
+  background: linear-gradient(135deg, #005f73 0%, #0a9396 100%) !important;
+}
+
+.dropdown-item-hover {
+  transition: background-color 0.3s ease, color 0.3s ease;
+  font-weight: 500;
+}
+.dropdown-item-hover:hover {
+  background-color: #52b788 !important;
+  color: #0a1f0a !important;
+  font-weight: 700;
+  transform: scale(1.05);
+  transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease;
+}
+
+
+
+
+
+
+
+
+
+
+
+
 

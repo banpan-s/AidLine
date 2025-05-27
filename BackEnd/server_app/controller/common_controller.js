@@ -1,4 +1,5 @@
 import contact from "../models/contact.model.js";
+
 export const addContact = async (request, response) => {
   // data receiving from front en react contact.jsx
   const contactObject = request.body;
@@ -17,4 +18,9 @@ export const addContact = async (request, response) => {
   } catch (error) {
     console.log(error.message);
   }
+};
+
+export const welcomeMessage = (request, response) => {
+  console.log(`Request received: ${request.method} ${request.path}`);
+  response.json({ message: "Welcome to the Express API Service!" });
 };

@@ -4,6 +4,7 @@ import dbConnect from './database/dbConnection.js'
 import userRoute from './router/user_router.js' 
 import ownerRouter from './router/ownerReg_router.js'
 import adminRoute from './router/admin_router.js'
+import notificationRouter from './router/notification_router.js'
 import cors from 'cors'
 
 const serverApp=express()
@@ -21,6 +22,7 @@ serverApp.use("/",commonRoute)
 serverApp.use("/owner",ownerRouter)
 serverApp.use("/user",userRoute)
 serverApp.use("/admin",adminRoute)
+serverApp.use("/notification", notificationRouter)
 
 serverApp.listen(PORT_NUMBER,()=> {
     console.log(`server is listening on http://localhost:${PORT_NUMBER}`)

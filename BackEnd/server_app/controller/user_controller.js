@@ -85,29 +85,36 @@ export const addBookqueue = async (request, response) => {
   }
 };
 
-//user edit profile
-export const editProfile = async (request, response) => {
-  const userObject = request.body;
-  const { phone, city, address } = userObject;
-  const { email } = request.query;
-  console.log(`email is ${email}`);
-  console.log(`phone is ${phone}`);
-  console.log(`city is ${city}`);
-  console.log(`address is ${address}`);
+import { image_upload } from "../middleware/doc_uplode_middleware.js";
 
-  try {
-    const filterCondition = { email: email };
-    const modifiedData = {
-      $set: { phone: phone, city: city, address: address },
-    };
-    console.log({ phone: phone, city: city, address: address });
-    const updateStatus = await User.updateOne(filterCondition, modifiedData);
-    console.log(`updated status is ${updateStatus}`);
-    response.json({ updateStatus: updateStatus });
-  } catch (err) {
-    console.log(err.message);
-    response.status(500).json({ message: "Server error", error: err.message });
-  }
+//user edit profile
+export const editProfile = (request, response) => {
+  image_upload(request, response, async (err) => {
+    if (err) {
+      console.error("Image upload error:", err);
+      return response.status(500).json({ message: "Image upload failed", error: err });
+    }
+
+    const userObject = request.body;
+    const { phone, city, address } = userObject;
+    const { email } = request.query;
+    const pic = request.file ? request.file.filename : null;
+
+    try {
+      const filterCondition = { email: email };
+      const modifiedData = {
+        $set: { phone: phone, city: city, address: address },
+      };
+      if (pic) {
+        modifiedData.$set.pic = pic;
+      }
+      const updateStatus = await User.updateOne(filterCondition, modifiedData);
+      response.json({ updateStatus: updateStatus, updatedPic: pic });
+    } catch (err) {
+      console.log(err.message);
+      response.status(500).json({ message: "Server error", error: err.message });
+    }
+  });
 };
 
 //user register

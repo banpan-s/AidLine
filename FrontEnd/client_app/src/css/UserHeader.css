@@ -1,0 +1,24 @@
+/* Custom Header Background */
+.bg-deepblue {
+  background-color: #002b5b !important;
+}
+
+/* Sidebar links */
+.custom-link {
+  color: #0f83f7;
+  font-weight: 500;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  transition: all 0.3s ease-in-out;
+}
+
+.custom-link:hover {
+  background-color: rgba(13, 110, 253, 0.1);
+  color: #0d6efd;
+  transform: translateX(5px);
+}
+
+/* Sidebar animation */
+.custom-offcanvas {
+  transition: transform 0.4s ease-in-out;
+}

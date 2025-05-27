@@ -5,6 +5,7 @@ import Header from './UserHeader';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
+
 function Userhome() {
   const navigate = useNavigate();
   const location = useLocation();
@@ -55,6 +56,7 @@ function Userhome() {
           </div>
         </div>
       </div>
+      {/* <Notification userEmail={localStorage.getItem("key")} type="user" /> */}
       <ToastContainer />
     </>
   );

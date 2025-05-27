@@ -32,7 +32,9 @@ const OwnerEditProfile = () => {
 
   const fetchProfile = async () => {
     try {
-      const response = await axios.get(getProfileURL, { params: { email: tokenEmail } });
+      const response = await axios.get(getProfileURL, {
+        params: { email: tokenEmail },
+      });
       const data = response.data.data;
       setFormData({
         ownername: data.ownername || "",
@@ -81,6 +83,10 @@ const OwnerEditProfile = () => {
       });
 
       setMessage(response.data.message || "Profile updated successfully");
+
+      setTimeout(() => {
+        navigate("/ownerhome");
+      }, 2000);
     } catch (error) {
       console.error("Error updating profile:", error);
       setMessage("Failed to update profile");
@@ -90,85 +96,27 @@ const OwnerEditProfile = () => {
   return (
     <>
       <Header />
-      <div style={{marginTop:"99px"}}>
-      <div className="container mt-5" style={{ maxWidth: "600px" }}>
-        <h2>Edit Owner Profile</h2>
-        {message && <div className="alert alert-info">{message}</div>}
-        <form onSubmit={handleSubmit}>
-          <div className="mb-3">
-            <label htmlFor="ownername" className="form-label">Owner Name</label>
-            <input
-              type="text"
-              className="form-control"
-              id="ownername"
-              name="ownername"
-              value={formData.ownername}
-              onChange={handleChange}
-              required
-            />
-          </div>
-          <div className="mb-3">
-            <label htmlFor="orgname" className="form-label">Organization Name</label>
-            <input
-              type="text"
-              className="form-control"
-              id="orgname"
-              name="orgname"
-              value={formData.orgname}
-              onChange={handleChange}
-              required
-            />
-          </div>
-          <div className="mb-3">
-            <label htmlFor="orgtype" className="form-label">Organization Type</label>
-            <input
-              type="text"
-              className="form-control"
-              id="orgtype"
-              name="orgtype"
-              value={formData.orgtype}
-              onChange={handleChange}
-              required
-            />
-          </div>
-          <div className="mb-3">
-            <label htmlFor="description" className="form-label">Description</label>
-            <textarea
-              className="form-control"
-              id="description"
-              name="description"
-              value={formData.description}
-              onChange={handleChange}
-              rows="3"
-              required
-            ></textarea>
-          </div>
-          <div className="mb-3">
-            <label htmlFor="phone" className="form-label">Phone</label>
-            <input
-              type="text"
-              className="form-control"
-              id="phone"
-              name="phone"
-              value={formData.phone}
-              onChange={handleChange}
-              required
-            />
-          </div>
-          <div className="mb-3">
-            <label htmlFor="address" className="form-label">Address</label>
-            <input
-              type="text"
-              className="form-control"
-              id="address"
-              name="address"
-              value={formData.address}
-              onChange={handleChange}
-              required
-            />
-          </div>
-          <div className="mb-3">
-            <label htmlFor="file" className="form-label">Profile Image</label>
+      <div
+        className="d-flex justify-content-center align-items-center"
+        style={{ minHeight: "100vh", background: "linear-gradient(to right, #e3f2fd, #ffffff)" }}
+      >
+        <div className="card shadow-lg p-4 rounded-4" style={{ maxWidth: "650px", width: "100%" }}>
+          <h3 className="text-center mb-4 text-primary fw-bold">Edit Your Profile</h3>
+
+          {message && <div className="alert alert-info text-center">{message}</div>}
+
+          {/* Profile image section */}
+          <div className="mb-4 text-center">
+             {previewImage && (
+              <img
+                src={previewImage}
+                alt="Profile Preview"
+                className="img-thumbnail mt-3"
+                style={{ maxWidth: "180px", borderRadius: "10px" }}
+              />
+            )}
+            {/* <label htmlFor="file" className="form-label fw-semibold text-secondary">Update Profile Image</label> */}
+
             <input
               type="file"
               className="form-control"
@@ -177,13 +125,95 @@ const OwnerEditProfile = () => {
               accept="image/*"
               onChange={handleChange}
             />
-            {previewImage && (
-              <img src={previewImage} alt="Profile Preview" className="img-thumbnail mt-2" style={{ maxWidth: "200px" }} />
-            )}
+           
           </div>
-          <button type="submit" className="btn btn-primary">Update Profile</button>
-        </form>
-      </div>
+
+          <form onSubmit={handleSubmit}>
+            <div className="mb-3">
+              <label className="form-label text-primary">Owner Name</label>
+              <input
+                type="text"
+                className="form-control"
+                name="ownername"
+                value={formData.ownername}
+                onChange={handleChange}
+                required
+              />
+            </div>
+
+            <div className="mb-3">
+              <label className="form-label text-primary">Organization Name</label>
+              <input
+                type="text"
+                className="form-control"
+                name="orgname"
+                value={formData.orgname}
+                onChange={handleChange}
+                required
+              />
+            </div>
+
+            <div className="mb-3">
+              <label className="form-label text-primary">Organization Type</label>
+              <select
+                className="form-select"
+                name="orgtype"
+                value={formData.orgtype}
+                onChange={handleChange}
+                required
+              >
+                <option value="">-- Select Type --</option>
+                <option value="Private">Private</option>
+                <option value="Government">Government</option>
+                <option value="NGO">NGO</option>
+                <option value="Startup">Startup</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+
+            <div className="mb-3">
+              <label className="form-label text-primary">Description</label>
+              <textarea
+                className="form-control"
+                name="description"
+                rows="3"
+                value={formData.description}
+                onChange={handleChange}
+                required
+              ></textarea>
+            </div>
+
+            <div className="mb-3">
+              <label className="form-label text-primary">Phone</label>
+              <input
+                type="text"
+                className="form-control"
+                name="phone"
+                value={formData.phone}
+                onChange={handleChange}
+                required
+              />
+            </div>
+
+            <div className="mb-4">
+              <label className="form-label text-primary">Address</label>
+              <input
+                type="text"
+                className="form-control"
+                name="address"
+                value={formData.address}
+                onChange={handleChange}
+                required
+              />
+            </div>
+
+            <div className="text-center">
+              <button type="submit" className="btn btn-primary px-4 py-2">
+                Save Changes
+              </button>
+            </div>
+          </form>
+        </div>
       </div>
     </>
   );

@@ -53,6 +53,30 @@ function UserList() {
                 <p className="mb-0 text-muted">
                   <strong>Phone:</strong> {user.phone || 'No Phone'}
                 </p>
+                <button
+                  className="btn btn-danger btn-sm mt-3"
+                  onClick={async () => {
+                    if (window.confirm(`Are you sure you want to delete user ${user.name || user.email}?`)) {
+                      try {
+                        const response = await fetch(`${API_BASE_URL}/admin/user/${user._id}`, {
+                          method: 'DELETE',
+                        });
+                        if (response.ok) {
+                          alert('User deleted successfully');
+                          // Remove deleted user from state
+                          setUsers((prevUsers) => prevUsers.filter((u) => u._id !== user._id));
+                        } else {
+                          const errorData = await response.json();
+                          alert('Failed to delete user: ' + (errorData.message || 'Unknown error'));
+                        }
+                      } catch (error) {
+                        alert('Error deleting user: ' + error.message);
+                      }
+                    }
+                  }}
+                >
+                  Delete User
+                </button>
               </div>
             </div>
           ))}

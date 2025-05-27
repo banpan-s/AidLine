@@ -47,6 +47,7 @@ function ContactList() {
                 <th>Name</th>
                 <th>Email</th>
                 <th>Message</th>
+                <th>Actions</th>
               </tr>
             </thead>
             <tbody className="bg-white">
@@ -56,6 +57,16 @@ function ContactList() {
                   <td className="text-capitalize">{contact.userName || 'N/A'}</td>
                   <td className="text-lowercase">{contact.userEmail || 'N/A'}</td>
                   <td className="text-wrap text-start">{contact.userQuery || 'No message provided'}</td>
+                  <td>
+                    <a
+                      className="btn btn-sm btn-primary"
+                      href={`mailto:${contact.userEmail}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      Reply
+                    </a>
+                  </td>
                 </tr>
               ))}
             </tbody>
@@ -67,3 +78,4 @@ function ContactList() {
 }
 
 export default ContactList;
+
